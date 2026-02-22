@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: pgvector/pgvector:pg16
+    container_name: ai-memory-postgres
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      POSTGRES_DB: ai_memory
+      POSTGRES_USER: ai_user
+      POSTGRES_PASSWORD: ai_password_123
+      POSTGRES_INITDB_ARGS: '-E UTF8 --locale=C'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ai_user -d ai_memory"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
