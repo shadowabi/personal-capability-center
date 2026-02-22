@@ -95,7 +95,7 @@ ai-memory-dashboard/
 ```mermaid
 flowchart TD
     subgraph 写入端
-        A[用户与AI讨论] --> B[通过memraid Skill保存]
+        A[用户与AI讨论] --> B[通过ai-memory Skill保存]
         B --> C[写入数据库]
     end
     
@@ -111,7 +111,7 @@ flowchart TD
 
 ### 流程说明
 
-1. **写入阶段**：用户与AI讨论有价值的内容 → 通过memraid Skill保存到数据库
+1. **写入阶段**：用户与AI讨论有价值的内容 → 通过ai-memory Skill保存到数据库
 2. **读取阶段**：可视化平台查看对话列表
 3. **检索阶段**：关键词、标签、重要性等搜索
 4. **管理阶段**：删除不需要的对话
