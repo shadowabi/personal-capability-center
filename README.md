@@ -7,8 +7,8 @@ Personal Capability Center是一个基于PostgreSQL + pgvector的个人知识管
 Personal Capability Center由以下两部分组成：
 
 ### 1. ai-memory（Skill）
-- 面向用户私有AI的插件模块
-- 通过AI对话交互，将高价值内容持久化至数据库
+- 面向用户AI的SKILL模块
+- 提供一整套操作记忆数据库写入和读取的功能
 - 职责：数据写入
 
 ### 2. 可视化平台（前端 + 后端）
@@ -16,6 +16,10 @@ Personal Capability Center由以下两部分组成：
 - 支持月度/年度报告的自动生成
 - 职责：数据读取、管理与分析
 
+## 平台特性
+1. 私有化部署，数据存储本地
+2. 能力模块化，无论接入的AI是opencode还是openclaw或者其他的AI工具，都能通过SKILL来操作该数据库，平台本身的操作除了总结功能需要做适配性改造以外，都不影响使用
+3. 按需写入/读取，该系统是独立的系统，只有用户要求AI操作才会产生交互，可以减少 token 消耗
 ---
 
 ## 项目结构
