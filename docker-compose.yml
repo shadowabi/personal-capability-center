@@ -24,16 +24,16 @@ services:
       args:
         - OPENCODE_API_URL=http://host.docker.internal:4096
     container_name: ai-memory-backend
+    env_file:
+      - ./backend/.env.local
     environment:
-      AI_MEMORY_HOST: postgresql
+      AI_MEMORY_HOST: localhost
       AI_MEMORY_PORT: 5432
       AI_MEMORY_DB: ai_memory
       AI_MEMORY_USER: ai_user
       AI_MEMORY_PASSWORD: ai_password_123
       CORS_ORIGINS: http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:8000
-      OPENCODE_API_URL: http://host.docker.internal:4096
-    ports:
-      - "8000:8000"
+    network_mode: host
     depends_on:
       postgresql:
         condition: service_healthy

@@ -20,6 +20,8 @@ logger = logging.getLogger(__name__)
 # 从环境变量读取配置
 OPENCODE_API_URL = os.getenv("OPENCODE_API_URL", "http://127.0.0.1:4096")
 AGENT_NAME = os.getenv("AGENT_NAME")
+MODEL_ID = os.getenv("MODEL_ID")
+PROVIDER_ID = os.getenv("PROVIDER_ID")
 DEFAULT_TIMEOUT = int(os.getenv("SUMMARY_TIMEOUT", "30"))
 MAX_CONVERSATIONS = int(os.getenv("MAX_CONVERSATIONS", "50"))
 MAX_DETAIL_LENGTH = int(os.getenv("MAX_DETAIL_LENGTH", "800"))
@@ -180,7 +182,11 @@ async def get_monthly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
                 f"{OPENCODE_API_URL}/session/{session_id}/message",
                 json={
                     "parts": [{"type": "text", "text": prompt}],
-                    "agent": AGENT_NAME
+                    "agent": AGENT_NAME,
+                    "model": {
+                        "modelID": MODEL_ID,
+                        "providerID": PROVIDER_ID
+                    }
                 }
             )
 

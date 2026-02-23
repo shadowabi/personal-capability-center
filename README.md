@@ -175,7 +175,24 @@ curl -I http://localhost:5173
 **查看 API 文档**：
 访问 http://localhost:8000/docs
 
-#### 4. 停止服务
+#### 4. 配置 OpenCode AI（可选）
+
+如果你想使用月度/年度总结功能，需要配置 OpenCode AI：
+
+```bash
+# 复制配置模板
+cd backend
+cp .env.example .env.local
+
+# 编辑 .env.local，填入你的配置
+# AGENT_NAME=your-agent-name
+# MODEL_ID=your-model-id
+# PROVIDER_ID=your-provider-id
+```
+
+详细配置说明请参考：[CONFIGURATION.md](./CONFIGURATION.md)
+
+#### 5. 停止服务
 
 ```bash
 # 停止所有服务
@@ -191,6 +208,8 @@ docker compose down -v
 ---
 
 ### 方式二：手动部署（开发调试）
+
+> **注意**：手动部署需要手动配置环境变量。推荐使用Docker Compose一键部署。
 
 #### Step 1: 启动数据库
 
@@ -288,7 +307,54 @@ npm run dev
 
 ---
 
-### Step 4: 部署 ai-memory Skill 到 OpenCode（可替换）
+### Step 4: 配置 OpenCode AI（可选，用于月度/年度总结）
+
+如果你想使用月度/年度总结功能，需要配置 OpenCode AI：
+
+#### 4.1 创建配置文件
+
+```bash
+cd backend
+cp .env.example .env
+```
+
+#### 4.2 修改配置文件
+
+编辑 `backend/.env`，添加 OpenCode 配置：
+
+```bash
+# OpenCode Agent 配置
+AGENT_NAME=your-agent-name
+MODEL_ID=your-model-id
+PROVIDER_ID=your-provider-id
+
+# OpenCode API 地址
+OPENCODE_API_URL=http://127.0.0.1:4096
+```
+
+**如何获取配置信息**：
+```bash
+# 查看 available agents
+curl -s http://127.0.0.1:4096/agent
+
+# 查看 available models and providers
+curl -s http://127.0.0.1:4096/config/providers
+```
+
+#### 4.3 重启后端服务
+
+```bash
+# 停止后端服务
+# Ctrl+C 或 kill 进程
+
+# 重新启动
+cd backend
+python main.py
+```
+
+详细配置说明请参考：[CONFIGURATION.md](./CONFIGURATION.md)
+
+### Step 5: 部署 ai-memory Skill 到 OpenCode（可替换）
 
 #### 4.1 找到 OpenCode skill 目录
 
@@ -404,9 +470,17 @@ PGPASSWORD=ai_password_123 psql -h localhost -U ai_user -d ai_memory -c "SELECT 
 # 检查OpenCode是否运行
 curl http://127.0.0.1:4096/health
 
-# 检查.env配置
-cat backend/.env | grep OPENCODE_API_URL
+# 检查.env配置（Docker部署）
+docker exec ai-memory-backend env | grep -E '(AGENT_NAME|MODEL_ID|PROVIDER_ID)'
+
+# 检查.env配置（手动部署）
+cat backend/.env | grep -E '(AGENT_NAME|MODEL_ID|PROVIDER_ID)'
+
+# 查看后端日志
+docker logs ai-memory-backend
 ```
+
+详细配置请参考：[CONFIGURATION.md](./CONFIGURATION.md)
 
 ### Windows WSL2问题
 
@@ -434,6 +508,9 @@ cat backend/.env | grep OPENCODE_API_URL
 ### 后端文档
 - **后端安装指南**：`backend/docs/INSTALL.md`
 - **后端 API 参考**：`backend/docs/references/API_REFERENCE.md`
+
+### 配置文档
+- **完整配置指南**：[CONFIGURATION.md](./CONFIGURATION.md) - OpenCode AI 配置、环境变量说明、故障排查
 
 ---
 
