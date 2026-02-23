@@ -86,6 +86,7 @@ python scripts/test_ai_memory.py
 - **使用示例**: [EXAMPLES.md](references/EXAMPLES.md)
 - **LangChain集成**: [LANGCHAIN.md](references/LANGCHAIN.md)
 - **内容存储指南**: [CONTENT_GUIDELINES.md](references/CONTENT_GUIDELINES.md)
+- **能力提炼指南**: [CAPABILITY_EXTRACTION.md](references/CAPABILITY_EXTRACTION.md)
 - **故障排查**: [WSL2_TROUBLESHOOTING.md](references/WSL2_TROUBLESHOOTING.md)
 
 ## 许可证

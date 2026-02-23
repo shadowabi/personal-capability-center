@@ -79,7 +79,8 @@ class AIMemory:
             port=port,
             database=database,
             user=user,
-            password=password
+            password=password,
+            client_encoding='utf8'  # 确保使用UTF-8编码
         )
         self.cur = self.conn.cursor()
     
@@ -92,10 +93,10 @@ class AIMemory:
         tags: List[str],
         importance: int,
         word_count: int,
-        date: Optional[date] = None
+        date_param: Optional[date] = None
     ) -> int:
         """添加新对话
-        
+
         Args:
             title: 对话标题（一句话描述主题）
             summary: 对话摘要（简要描述）
@@ -104,20 +105,20 @@ class AIMemory:
             tags: 标签列表
             importance: 重要性评分（1-10）
             word_count: 字数统计
-            date: 对话日期（默认为今天）
-        
+            date_param: 对话日期（默认为今天）
+
         Returns:
             新创建的对话记录ID
         """
-        if date is None:
-            date = date.today()
+        if date_param is None:
+            date_param = date.today()
         
         self.cur.execute('''
-            INSERT INTO conversations 
+            INSERT INTO conversations
             (date, title, summary, details, embedding, tags, importance, word_count)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
-        ''', (date, title, summary, details, embedding, tags, importance, word_count))
+        ''', (date_param, title, summary, details, embedding, tags, importance, word_count))
         
         self.conn.commit()
         return self.cur.fetchone()[0]

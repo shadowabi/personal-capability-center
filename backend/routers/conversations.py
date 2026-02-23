@@ -4,6 +4,7 @@ Conversations router - 对话管理 API
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import List, Optional
 from datetime import date
+import logging
 
 from models import (
     ConversationResponse,
@@ -14,6 +15,7 @@ from models import (
 from database import get_db
 
 router = APIRouter(prefix="/conversations", tags=["conversations"])
+logger = logging.getLogger(__name__)
 
 
 @router.get("", response_model=ConversationListResponse)
@@ -41,7 +43,7 @@ async def get_conversations(
             if conv:
                 full_conversations.append(conv)
         except Exception as e:
-            print(f"Error getting conversation {conv_id}: {e}")
+            logger.error(f"Error getting conversation {conv_id}: {e}", exc_info=True)
 
     # 排序
     reverse = sort_order == "desc"

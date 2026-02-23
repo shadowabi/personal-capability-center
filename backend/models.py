@@ -31,7 +31,7 @@ class ConversationCreate(BaseModel):
     tags: List[str] = Field(default_factory=list)
     importance: int = Field(default=5, ge=1, le=10)
     word_count: Optional[int] = None
-    date_conversation: Optional[Date] = None
+    date: Optional[Date] = None
 
 
 class ConversationUpdate(BaseModel):
