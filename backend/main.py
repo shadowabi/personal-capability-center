@@ -26,6 +26,7 @@ app = FastAPI(
 )
 
 # 配置 CORS
+logger.info(f"CORS Origins: {CORS_ORIGINS}")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
@@ -39,6 +40,7 @@ app.add_middleware(
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Unhandled exception: {exc}", exc_info=True)
+    logger.info(f"Request origin: {request.headers.get('origin')}")
     return JSONResponse(
         status_code=500,
         content={"error": "Internal server error", "detail": str(exc)}

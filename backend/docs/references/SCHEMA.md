@@ -15,13 +15,14 @@ CREATE TABLE conversations (
     title TEXT NOT NULL DEFAULT '',
     summary TEXT,
     details TEXT,
-    embedding VECTOR(1536),
-    tags TEXT[],
-    importance INTEGER NOT NULL DEFAULT 5 CHECK (importance BETWEEN 1 AND 10),
+    importance INTEGER NOT NULL DEFAULT 5 CHECK (importance >= 1 AND importance <= 10),
     word_count INTEGER DEFAULT 0,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS embedding vector(1536);
+ALTER TABLE conversations ADD COLUMN IF NOT EXISTS tags TEXT[];
 ```
 
 **字段说明：**

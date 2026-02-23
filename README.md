@@ -127,14 +127,72 @@ flowchart TD
 
 ### 环境要求
 
-- **Docker** - 用于运行 PostgreSQL + pgvector 数据库
-- **Python 3.8+** - 后端运行环境
-- **Node.js 18+** - 前端运行环境
+- **Docker** - 用于运行所有服务（数据库 + 后端 + 前端）
 - **OpenCode**（可替换） - AI 助手，用于与数据库交互以及知识总结
 
 ---
 
-### Step 1: 启动数据库
+### 方式一：使用 Docker Compose 一键部署（推荐）
+
+#### 1. 启动所有服务
+
+进入项目根目录，使用 Docker Compose 启动所有服务：
+
+```bash
+cd F:\test\ai-memory-dashboard
+docker compose up -d
+```
+
+这会自动启动以下三个微服务：
+- ✅ **PostgreSQL + pgvector** (端口 5432)
+- ✅ **FastAPI 后端** (端口 8000)
+- ✅ **React + Vite 前端** (端口 5173)
+
+#### 2. 验证服务状态
+
+查看所有服务是否正常运行：
+
+```bash
+docker compose ps
+```
+
+应该看到三个服务都显示为 `Up` 或 `Up (healthy)` 状态。
+
+#### 3. 测试访问
+
+**测试后端 API**：
+```bash
+curl http://localhost:8000/health
+```
+应该返回：`{"status":"healthy"}`
+
+**测试前端**：
+```bash
+curl -I http://localhost:5173
+```
+应该返回 `HTTP/1.1 200 OK`
+
+**查看 API 文档**：
+访问 http://localhost:8000/docs
+
+#### 4. 停止服务
+
+```bash
+# 停止所有服务
+docker compose stop
+
+# 停止并删除容器
+docker compose down
+
+# 停止、删除容器和卷（会删除数据）
+docker compose down -v
+```
+
+---
+
+### 方式二：手动部署（开发调试）
+
+#### Step 1: 启动数据库
 
 进入后端目录，使用 Docker Compose 启动数据库：
 
@@ -156,18 +214,16 @@ docker-compose up -d
 docker ps | grep ai-memory-postgres
 ```
 
----
+#### Step 2: 启动后端
 
-### Step 2: 启动后端
-
-#### 2.1 安装 Python 依赖
+##### 2.1 安装 Python 依赖
 
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-#### 2.2 配置环境变量
+##### 2.2 配置环境变量
 
 从示例配置文件创建 `.env` 文件：
 
@@ -203,7 +259,7 @@ OPENCODE_API_URL=http://127.0.0.1:4096
 
 **注意**：`.env` 文件已在 `.gitignore` 中，不会被提交到 Git 仓库。
 
-#### 2.3 启动后端服务
+##### 2.3 启动后端服务
 
 ```bash
 python main.py
@@ -213,18 +269,16 @@ python main.py
 
 查看 API 文档：**http://localhost:8000/docs**
 
----
+#### Step 3: 启动前端
 
-### Step 3: 启动前端
-
-#### 3.1 安装 Node.js 依赖
+##### 3.1 安装 Node.js 依赖
 
 ```bash
 cd frontend
 npm install
 ```
 
-#### 3.2 启动前端开发服务器
+##### 3.2 启动前端开发服务器
 
 ```bash
 npm run dev
