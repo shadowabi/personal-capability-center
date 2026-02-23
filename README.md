@@ -130,7 +130,7 @@ flowchart TD
 - **Docker Desktop** - 用于运行 PostgreSQL + pgvector 数据库
 - **Python 3.8+** - 后端运行环境
 - **Node.js 18+** - 前端运行环境
-- **OpenCode** - AI 助手（用于 ai-memory Skill）
+- **OpenCode**（可替换） - AI 助手，用于与数据库交互以及知识总结
 
 ---
 
@@ -233,7 +233,7 @@ npm run dev
 
 ---
 
-### Step 4: 部署 ai-memory Skill 到 OpenCode
+### Step 4: 部署 ai-memory Skill 到 OpenCode（可替换）
 
 #### 4.1 找到 OpenCode skill 目录
 
@@ -268,7 +268,7 @@ ai-memory/
     └── WSL2_TROUBLESHOOTING.md # 故障排查
 ```
 
-#### 4.3 重启 OpenCode
+#### 4.3 重启 OpenCode（可替换）
 
 重启你的 OpenCode，让技能系统加载更新后的 skill。
 
@@ -278,26 +278,11 @@ ai-memory/
 
 #### 5.1 通过 Skill 记录 AI 对话
 
-现在你的 OpenCode AI 可以：
+现在你的 OpenCode AI 可以使用SKILL操作数据库：
 
-```python
-from ai_memory.ai_memory import AIMemory
-
-# 连接到数据库
-memory = AIMemory()
-
-# 添加和AI讨论后的有价值内容
-memory.add_conversation(
-    title="学习向量搜索",
-    summary="学习了pgvector的使用方法",
-    details="1. 安装pgvector扩展\n2. 创建向量列\n3. 使用vector搜索API...",
-    tags=["Python", "向量搜索"],
-    importance=8,
-    word_count=50
-)
-
-# 关闭连接
-memory.close()
+```
+查询：使用 AI-Memory SKILL 查看关于XXX的对话
+插入：使用 AI-Memory SKILL 总结当前对话并写入
 ```
 
 #### 5.2 通过前端查看和管理
