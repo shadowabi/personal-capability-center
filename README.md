@@ -367,10 +367,6 @@ cat backend/.env | grep OPENCODE_API_URL
 
 ### 核心文档
 - **README.md** - 项目概述和快速开始（本文件）
-- **PROJECT_STRUCTURE.md** - 项目结构说明和重构指南
-- **ARCHITECTURE.md** - 系统架构文档
-- **DEVELOPMENT.md** - 开发指南
-- **PRIVACY_CHECK.md** - 隐私检查与清理指南
 
 ### AI Memory Skill
 - **AI Memory Skill**：`skill/SKILL.md` - Python SDK完整文档
