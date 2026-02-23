@@ -26,7 +26,7 @@ Personal Capability Center由以下两部分组成：
 
 ```
 ai-memory-dashboard/
-├── ai-memory/                # OpenCode AI Memory Skill
+├── ai-memory/                # AI Memory Skill
 │   ├── SKILL.md             # Skill 文档
 │   ├── scripts/             # Python SDK
 │   │   ├── ai_memory.py     # AIMemory 类
@@ -55,7 +55,7 @@ ai-memory-dashboard/
 │   │   └── summary.py       # 总结 API
 │   ├── scripts/             # 工具脚本
 │   │   └── init-db.sh       # 数据库初始化
-│   ├── docker-compose.yml   # PostgreSQL + pgvector Docker 配置
+│   ├── docker-compose.yml   # 数据库初始化
 │   ├── requirements.txt     # Python 依赖
 │   └── .env.example         # 环境变量示例
 │
@@ -127,7 +127,7 @@ flowchart TD
 
 ### 环境要求
 
-- **Docker Desktop** - 用于运行 PostgreSQL + pgvector 数据库
+- **Docker** - 用于运行 PostgreSQL + pgvector 数据库
 - **Python 3.8+** - 后端运行环境
 - **Node.js 18+** - 前端运行环境
 - **OpenCode**（可替换） - AI 助手，用于与数据库交互以及知识总结
@@ -136,7 +136,7 @@ flowchart TD
 
 ### Step 1: 启动数据库
 
-进入后端目录，使用 Docker Compose 启动 PostgreSQL + pgvector：
+进入后端目录，使用 Docker Compose 启动数据库：
 
 ```bash
 cd backend
@@ -181,7 +181,7 @@ cd backend
 cp .env.example .env
 ```
 
-`.env` 文件包含以下配置（已包含必要的 CORS 配置）：
+`.env` 文件包含以下配置：
 
 ```bash
 # 数据库连接
@@ -191,9 +191,10 @@ AI_MEMORY_DB=ai_memory
 AI_MEMORY_USER=ai_user
 AI_MEMORY_PASSWORD=ai_password_123
 
-# API 服务
+# 后端 API 服务
 API_HOST=0.0.0.0
 API_PORT=8000
+# CORS 防护配置
 CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173
 
 # OpenCode 集成
