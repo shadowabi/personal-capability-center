@@ -1,6 +1,23 @@
 # Personal Capability Center / 个人能力中心
 
+[![GitHub issues](https://img.shields.io/github/issues/shadowabi/personal-capability-center)](https://github.com/shadowabi/personal-capability-center/issues)
+[![GitHub forks](https://img.shields.io/github/forks/shadowabi/personal-capability-center)](https://github.com/shadowabi/personal-capability-center/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/shadowabi/personal-capability-center)](https://github.com/shadowabi/personal-capability-center/stargazers)
+
 Personal Capability Center是一个基于PostgreSQL + pgvector的个人知识管理系统，实现AI对话内容的结构化存储、可视化管理和智能化成长分析。
+
+## 核心理念
+
+### 对话即能力
+每一次与AI的对话都是一次知识交互，通过结构化存储和管理，将零散的对话转化为可追溯、可分析的个人能力资产。
+
+### 引导式成长
+通过月度/年度报告功能，系统化回顾和总结，实现能力的持续迭代和提升。
+
+### 系统能力
+- **结构化存储**：将AI对话内容存储为可查询、可管理的结构化数据
+- **语义搜索**：基于pgvector的向量搜索，实现智能化的内容检索
+- **成长分析**：通过统计和报告功能，可视化展示能力成长轨迹
 
 ## 系统定义
 
@@ -17,9 +34,77 @@ Personal Capability Center由以下两部分组成：
 - 职责：数据读取、管理与分析
 
 ## 平台特性
-1. 私有化部署，数据存储本地
-2. 能力模块化，无论接入的AI是opencode还是openclaw或者其他的AI工具，都能通过SKILL来操作该数据库，平台本身的操作除了总结功能需要做适配性改造以外，都不影响使用
-3. 按需写入/读取，该系统是独立的系统，只有用户要求AI操作才会产生交互，可以减少 token 消耗
+
+### 智能记忆管理
+- 对话内容的结构化存储（标题、内容、来源时间）
+- 标签分类和管理
+- 重要性标记（高/中/低）
+
+### 能力盘点系统
+- 对话列表查看和筛选
+- 基于pgvector的语义搜索
+- 统计分析功能
+
+### 报告生成
+- 月度/年度总结功能
+- AI自动生成总结报告
+- 报告保存回数据库
+
+### 对话即能力
+- **SKILL模块**：Python SDK提供完整的数据库写入/读取API
+- **可视化平台**：Web界面对话管理和查询
+- **按需交互**：减少token消耗，仅在用户要求时产生交互
+
+### 系统特性
+- **私有化部署**：数据存储在本地PostgreSQL
+- **模块化架构**：可接入不同AI工具（OpenCode、OpenClaw等）
+- **按需写入/读取**：独立的系统，仅用户要求时产生交互
+
+## 使用示例
+
+### 场景1：记录AI对话
+```
+用户：使用 AI-Memory SKILL 总结当前对话并写入
+AI：已保存对话到数据库（标题：如何使用PostgreSQL）
+```
+
+### 场景2：查询历史对话
+```
+用户：使用 AI-Memory SKILL 查看关于向量搜索的对话
+AI：找到3条相关对话：
+1. pgvector基础使用（2025-12-01）
+2. 语义搜索优化（2025-12-05）
+...
+```
+
+### 场景3：生成月度总结
+1. 登录前端平台（http://localhost:5173）
+2. 点击"月度总结"按钮
+3. 后端调用OpenCode AI生成总结
+4. 查看能力提升报告
+
+## 适用场景
+
+- **AI知识管理**：长期保存与AI的对话，形成个人知识库
+- **技能成长追踪**：通过月度/年度报告，系统化回顾学习成果
+- **学习资源回顾**：基于语义搜索，快速找到历史相关讨论
+- **个人能力盘点**：通过统计分析，了解自己的学习重点和成长轨迹
+
+## 技术亮点
+
+### 后端技术
+- **FastAPI**：高性能异步Web框架，支持自动API文档生成
+- **PostgreSQL 16 + pgvector**：支持向量相似度搜索，HNSW算法加速百万级向量检索
+
+### 前端技术
+- **React 18 + Vite**：现代化前端架构，极速构建体验
+- **shadcn/ui**：高质量UI组件库
+- **Framer Motion**：流畅的动画效果
+
+### AI集成
+- **Python SDK**：完整的AIMemory类，可直接调用数据库操作
+- **渐进式加载**：三级加载机制（metadata → SKILL.md → references）
+
 ---
 
 ## 项目结构
@@ -129,6 +214,13 @@ flowchart TD
 
 - **Docker** - 用于运行所有服务（数据库 + 后端 + 前端）
 - **OpenCode**（可替换） - AI 助手，用于与数据库交互以及知识总结
+
+### 部署方式对比
+
+| 部署方式 | 适用场景 | 优点 | 缺点 |
+|---------|---------|------|------|
+| Docker Compose | 快速启动、生产环境 | 一键部署、环境隔离 | 需要安装Docker |
+| 手动部署 | 开发调试 | 灵活控制、便于调试 | 需要手动配置环境 |
 
 ---
 
