@@ -1,342 +1,513 @@
-# Personal Capability Center / 个人能力中心
+# Personal Capability Center
 
 [![GitHub issues](https://img.shields.io/github/issues/shadowabi/personal-capability-center)](https://github.com/shadowabi/personal-capability-center/issues)
 [![GitHub forks](https://img.shields.io/github/forks/shadowabi/personal-capability-center)](https://github.com/shadowabi/personal-capability-center/network/members)
 [![GitHub stars](https://img.shields.io/github/stars/shadowabi/personal-capability-center)](https://github.com/shadowabi/personal-capability-center/stargazers)
 
-Personal Capability Center是一个基于PostgreSQL + pgvector的个人知识管理系统，实现AI对话内容的结构化存储、可视化管理和智能化成长分析。
+Personal Capability Center is a personal capability management system based on PostgreSQL + pgvector, implementing structured storage, visual management, and intelligent growth analysis of AI conversation capabilities.
 
-## 核心理念
+## Core Philosophy
 
-### 对话即能力
-每一次与AI的对话都是一次知识交互，通过结构化存储和管理，将零散的对话转化为可追溯、可分析的个人能力资产。
+### Capability Extraction (Core)
+Every conversation with AI may bring about cognitive leaps. The system **does not store original conversation text**, but instead extracts **reusable capabilities** from the conversation, transforming scattered thoughts into traceable, analyzable personal capability assets.
 
-### 引导式成长
-通过月度/年度报告功能，系统化回顾和总结，实现能力的持续迭代和提升。
+> **⚠️ Important Distinction**:
+> - **What is stored**: Extracted capabilities (cognitive leaps, capability definitions, application scenarios)
+> - **What is NOT stored**: Original conversation text (redundant trial-and-error, repetitive discussion processes)
+> - **Why**: Capabilities are reusable, conversations are not. Storing capabilities = storing wisdom, storing conversations = storing noise
 
-### 系统能力
-- **结构化存储**：将AI对话内容存储为可查询、可管理的结构化数据
-- **语义搜索**：基于pgvector的向量搜索，实现智能化的内容检索
-- **成长分析**：通过统计和报告功能，可视化展示能力成长轨迹
+### Capability vs Knowledge Point
+- **Knowledge Point**: "P/E ratio = stock price / earnings per share" (What it is, not reusable)
+- **Capability**: "Dynamic valuation: Understanding that metrics reflect future expectations rather than static reality" (How to use, reusable)
+- **System Focus**: Storing **capabilities**, not knowledge points
 
-## 系统定义
+### Guided Growth
+Through monthly/annual report functionality, systematically review and summarize to achieve continuous capability iteration and improvement.
 
-Personal Capability Center由以下两部分组成：
+### System Capabilities
+- **Structured Storage**: Store extracted capabilities as queryable, manageable structured data
+- **Semantic Search**: Vector search based on pgvector for intelligent capability retrieval
+- **Growth Analysis**: Visualize capability growth trajectory through statistical and reporting functions
 
-### 1. ai-memory（Skill）
-- 面向用户AI的SKILL模块
-- 提供一整套操作记忆数据库写入和读取的功能
-- 职责：数据写入
+## System Definition
 
-### 2. 可视化平台（前端 + 后端）
-- 提供对话内容的查询、筛选与管理功能
-- 支持月度/年度报告的自动生成
-- 职责：数据读取、管理与分析
+Personal Capability Center consists of the following two parts:
 
-## 平台特性
+### 1. ai-memory (Skill)
+- SKILL module for user-facing AI
+- Provides a complete set of functionality for memory database write and read operations
+- Responsibility: Data writing
 
-### 智能记忆管理
-- 对话内容的结构化存储（标题、内容、来源时间）
-- 标签分类和管理
-- 重要性标记（高/中/低）
+### 2. Visualization Platform (Frontend + Backend)
+- Provides capability query, filtering, and management functionality
+- Supports automatic generation of monthly/annual reports
+- Responsibility: Data reading, management, and analysis
 
-### 能力盘点系统
-- 对话列表查看和筛选
-- 基于pgvector的语义搜索
-- 统计分析功能
+## Platform Features
 
-### 报告生成
-- 月度/年度总结功能
-- AI自动生成总结报告
-- 报告保存回数据库
+### Intelligent Memory Management
+- Structured storage of capabilities (title, capability definition, cognitive transformation process)
+- Tag classification and management
+- Importance marking (high/medium/low)
 
-### 对话即能力
-- **SKILL模块**：Python SDK提供完整的数据库写入/读取API
-- **可视化平台**：Web界面对话管理和查询
-- **按需交互**：减少token消耗，仅在用户要求时产生交互
+### Capability Inventory System
+- Capability list viewing and filtering
+- Semantic search based on pgvector
+- Statistical analysis functionality
 
-### 系统特性
-- **私有化部署**：数据存储在本地PostgreSQL
-- **模块化架构**：可接入不同AI工具（OpenCode、OpenClaw等）
-- **按需写入/读取**：独立的系统，仅用户要求时产生交互
+### Report Generation
+- Monthly/annual summary functionality
+- AI automatically generates summary reports
+- Reports saved back to database
 
-## 使用示例
+### Capability Records
+- **SKILL Module**: Python SDK provides complete database write/read API
+- **Visualization Platform**: Web interface for capability management and querying
+- **On-demand Interaction**: Reduces token consumption, only generates interactions when requested by users
 
-### 场景1：记录AI对话
+### System Features
+- **Private Deployment**: Data stored in local PostgreSQL
+- **Modular Architecture**: Can integrate different AI tools (OpenCode, OpenClaw, etc.)
+- **On-demand Write/Read**: Independent system, only generates interactions when requested by users
+
+## Usage Examples
+
+### Scenario 1: Record AI Capabilities
 ```
-用户：使用 AI-Memory SKILL 总结当前对话并写入
-AI：已保存对话到数据库（标题：如何使用PostgreSQL）
+User: Use AI-Memory SKILL to summarize current conversation and write to database
+AI: Successfully saved capability to database (Title: How to use PostgreSQL)
 ```
 
-### 场景2：查询历史对话
+### Scenario 2: Query Historical Capabilities
 ```
-用户：使用 AI-Memory SKILL 查看关于向量搜索的对话
-AI：找到3条相关对话：
-1. pgvector基础使用（2025-12-01）
-2. 语义搜索优化（2025-12-05）
+User: Use AI-Memory SKILL to view capabilities related to vector search
+AI: Found 3 related capabilities:
+1. pgvector basic usage (2025-12-01)
+2. Semantic search optimization (2025-12-05)
 ...
 ```
 
-### 场景3：生成月度总结
-1. 登录前端平台（http://localhost:5173）
-2. 点击"月度总结"按钮
-3. 后端调用OpenCode AI生成总结
-4. 查看能力提升报告
+### Scenario 3: Generate Monthly Summary
+1. Login to frontend platform (http://localhost:5173)
+2. Click "Monthly Summary" button
+3. Backend calls OpenCode AI to generate summary
+4. View capability improvement report
 
-## 适用场景
+### Scenario 4: Summarize Conversation into Capabilities via ai-memory Skill (Example)
 
-- **AI知识管理**：长期保存与AI的对话，形成个人知识库
-- **技能成长追踪**：通过月度/年度报告，系统化回顾学习成果
-- **学习资源回顾**：基于语义搜索，快速找到历史相关讨论
-- **个人能力盘点**：通过统计分析，了解自己的学习重点和成长轨迹
+> **💡 Feature Description**: This is the capability extraction functionality provided by ai-memory Skill, used to save capabilities mastered in a single conversation to the database.
+>
+> **Difference from Monthly Summary**:
+> - **Capability Extraction** (this scenario): Specific capabilities mastered in a single conversation (e.g., "Task Decomposition Capability")
+> - **Monthly Summary** (platform feature): Comprehensively analyze all capability records to generate higher-level growth reports
+>
+> This scenario demonstrates the **capability extraction** process.
 
-## 技术亮点
+Assume you have the following conversation content:
 
-### 后端技术
-- **FastAPI**：高性能异步Web框架，支持自动API文档生成
-- **PostgreSQL 16 + pgvector**：支持向量相似度搜索，HNSW算法加速百万级向量检索
+```
+User: I can never complete my plan. I list 10 tasks every day, but only complete 3. It's frustrating.
 
-### 前端技术
-- **React 18 + Vite**：现代化前端架构，极速构建体验
-- **shadcn/ui**：高质量UI组件库
-- **Framer Motion**：流畅的动画效果
+AI: You mentioned you only complete 3 tasks. What do these 3 tasks have in common?
 
-### AI集成
-- **Python SDK**：完整的AIMemory类，可直接调用数据库操作
-- **渐进式加载**：三级加载机制（metadata → SKILL.md → references）
+User: Usually urgent but important tasks, like meetings and replying to emails. The unfinished ones are important but not urgent, like studying and exercising.
+
+AI: Interesting observation. Why do you think important but not urgent tasks are always postponed?
+
+User: Because they don't have deadlines. Nothing happens immediately if I don't do them.
+
+AI: So if we set explicit deadlines for these important but not urgent tasks, what would change?
+
+User: Hmm, it might be easier to start. But I still procrastinate.
+
+AI: You mentioned "procrastination." What do you think is the essence of procrastination?
+
+User: Because the tasks are too big, I don't know where to start.
+
+AI: If a big task is decomposed into 5 small tasks, and each small task only takes 10 minutes, would you still procrastinate?
+
+User: Probably not, because 10-minute tasks are easy to do.
+
+AI: So the root of procrastination might not be laziness, but psychological pressure caused by tasks being too big?
+
+User: Right, I never thought about it from this angle. So the solution is: decompose big tasks into small tasks, and set explicit deadlines for each small task?
+
+AI: Excellent. You've mastered a set of methods. Can you summarize them?
+
+User: 1. Task decomposition: Break big tasks into 10-minute small tasks
+2. Set deadlines: Each small task has an explicit deadline
+3. Prioritize important but not urgent tasks
+```
+
+**Complete Example of Summarizing into Capabilities**:
+
+```python
+import sys
+sys.path.insert(0, r'C:\Users\shadow\.config\opencode\skills\ai-memory')
+
+from scripts.ai_memory import AIMemory, generate_mock_embedding
+
+# ===== Content to save =====
+
+# 1. title: Describe cognitive leap
+title = "Cognitive leap from 'too many tasks to complete' to 'task decomposition + deadlines'"
+
+# 2. summary: Structured summary
+summary = """Problem background: List 10 tasks every day, only complete 3, feel frustrated
+
+Mastered capabilities:
+1. Task decomposition capability: Decompose big tasks into 10-minute small tasks
+2. Deadline setting capability: Each small task has an explicit deadline
+3. Priority management capability: Prioritize important but not urgent tasks
+
+Deep insights:
+- The root of procrastination is not laziness, but psychological pressure caused by tasks being too big
+- Important but not urgent tasks are postponed because they lack deadlines
+- Small tasks are easy to start, psychological pressure is low"""
+
+# 3. details: Complete thinking process
+details = """Problem background:
+- Initial situation: List 10 tasks every day, only complete 3, feel frustrated
+- Existing cognition: Urgent tasks get completed, important but not urgent tasks get postponed
+- Confusion point: Why are important but not urgent tasks always postponed?
 
 ---
 
-## 项目结构
+My mastered capabilities:
+
+Capability 1: Task decomposition capability
+Capability definition: Decompose big tasks into easily executable small tasks, reducing psychological pressure
+Reflected in deep insights:
+- Big tasks cause psychological pressure, the essence of procrastination is not laziness
+- 10-minute small tasks are easy to start, psychological pressure is low
+
+Cognitive transformation process:
+- Original cognition: Procrastination is due to laziness, inability to complete tasks is poor self-discipline
+- Guided question: "What do you think is the essence of procrastination?"
+- Guided follow-up: "If a big task is decomposed into 5 small tasks, each small task only takes 10 minutes, would you still procrastinate?"
+- Breakthrough point: Realize that 10-minute tasks are easy to do, won't procrastinate
+- New cognition: The root of procrastination is psychological pressure caused by tasks being too big, solution is task decomposition
+
+---
+
+Capability 2: Deadline setting capability
+Capability definition: Set explicit deadlines for tasks to create urgency
+Reflected in deep insights:
+- Important but not urgent tasks are postponed because they lack deadlines
+- Explicit deadlines can prompt action
+
+Cognitive transformation process:
+- Original cognition: Important but not urgent tasks don't need to be done immediately, so they always get pushed back
+- Guided question: "If we set explicit deadlines for these important but not urgent tasks, what would change?"
+- Realize: Tasks with deadlines are easier to start
+- New cognition: Important but not urgent tasks need artificially created deadlines
+
+---
+
+Capability 3: Priority management capability
+Capability definition: Prioritize important but not urgent tasks, avoid always being occupied by urgent tasks
+Reflected in deep insights:
+- Urgent but important tasks automatically get completed (meetings, replying to emails)
+- What can't be completed is important but not urgent tasks (studying, exercising)
+- Only by actively managing important but not urgent tasks can we avoid passive response
+
+Cognitive transformation process:
+- Original cognition: List 10 tasks every day, complete as many as possible
+- Guided observation: "What do the 3 tasks you complete have in common?"
+- Realize: Completed ones are urgent but important, incomplete ones are important but not urgent
+- Guided clarification: "Why are important but not urgent tasks always postponed?"
+- Breakthrough point: Realize must actively manage important but not urgent tasks
+- New cognition: Prioritize important but not urgent tasks, and execute them using task decomposition + deadlines"""
+
+# 4. tags: Tag classification
+tags = ['Time Management', 'Task Management', 'Cognitive Leap']
+
+# 5. importance: Importance score (1-10)
+importance = 9
+
+# 6. word_count: Word count
+word_count = len(details)
+
+# ===== Save to database =====
+
+memory = AIMemory()
+embedding = generate_mock_embedding()  # Generate mock vector (use real embedding model in production)
+conv_id = memory.add_conversation(
+    title=title,
+    summary=summary,
+    details=details,
+    embedding=embedding,
+    tags=tags,
+    importance=importance,
+    word_count=word_count
+)
+print(f"Successfully saved, conversation ID: {conv_id}")
+memory.close()
+```
+
+**Key Points**:
+- ✅ **title**: Describe cognitive leap (from "X" to "Y")
+- ✅ **summary**: Structured summary, including problem background, mastered capabilities, deep insights
+- ✅ **details**: Complete thinking process, each capability includes capability definition, reflected in deep insights, cognitive transformation process
+- ✅ **Cognitive transformation process**: Original cognition → Guided question → Breakthrough point → New cognition
+- ✅ **Capability vs Knowledge Point**: Capability is "how to use", reusable; knowledge point is "what it is", not reusable
+
+## Applicable Scenarios
+
+- **AI Capability Management**: Long-term preservation of capabilities extracted from AI conversations, forming personal capability library
+- **Skill Growth Tracking**: Systematically review learning outcomes through monthly/annual reports
+- **Capability Resource Review**: Find historical related capabilities quickly based on semantic search
+- **Personal Capability Inventory**: Understand your capability growth trajectory through statistical analysis
+
+## Technical Highlights
+
+### Backend Technology
+- **FastAPI**: High-performance async web framework, supports automatic API documentation generation
+- **PostgreSQL 16 + pgvector**: Supports vector similarity search, HNSW algorithm accelerates million-level vector retrieval
+
+### Frontend Technology
+- **React 18 + Vite**: Modern frontend architecture, ultra-fast build experience
+- **shadcn/ui**: High-quality UI component library
+- **Framer Motion**: Smooth animation effects
+
+### AI Integration
+- **Python SDK**: Complete AIMemory class, can directly call database operations
+- **Progressive Loading**: Three-level loading mechanism (metadata → SKILL.md → references)
+
+---
+
+## Project Structure
 
 ```
 ai-memory-dashboard/
-├── ai-memory/                # AI Memory Skill
-│   ├── SKILL.md             # Skill 文档
-│   ├── scripts/             # Python SDK
-│   │   ├── ai_memory.py     # AIMemory 类
-│   │   ├── test_ai_memory.py  # 测试脚本
-│   │   └── quick_test.py    # 快速测试
-│   ├── references/          # 完整文档
-│   │   ├── API_REFERENCE.md
-│   │   ├── INSTALL.md
-│   │   ├── CONTENT_GUIDELINES.md
-│   │   ├── TESTING.md
-│   │   ├── WSL2_TROUBLESHOOTING.md
-│   │   ├── EXAMPLES.md
-│   │   ├── LANGCHAIN.md
-│   │   └── SCHEMA.md
-│   └── .env.example         # 环境变量示例
+├── skills/                   # Skills directory
+│   └── ai-memory/           # AI Memory Skill
+│       ├── SKILL.md         # Skill documentation
+│       ├── scripts/         # Python SDK
+│       │   ├── ai_memory.py # AIMemory class
+│       │   ├── test_ai_memory.py  # Test script
+│       │   └── quick_test.py    # Quick test
+│       ├── references/      # Complete documentation
+│       │   ├── API_REFERENCE.md
+│       │   ├── INSTALL.md
+│       │   ├── CONTENT_GUIDELINES.md
+│       │   ├── TESTING.md
+│       │   ├── WSL2_TROUBLESHOOTING.md
+│       │   ├── EXAMPLES.md
+│       │   ├── LANGCHAIN.md
+│       │   └── SCHEMA.md
+│       └── .env.example     # Environment variable example
 │
-├── backend/                   # 后端服务 (FastAPI)
-│   ├── main.py              # FastAPI 主程序
-│   ├── database.py          # 同步数据库连接
-│   ├── database_async.py    # 异步数据库连接
-│   ├── models.py            # Pydantic 数据模型
-│   ├── routers/             # API 路由
-│   │   ├── conversations.py # 对话管理 API
-│   │   ├── search.py        # 搜索 API
-│   │   ├── statistics.py    # 统计 API
-│   │   └── summary.py       # 总结 API
-│   ├── scripts/             # 工具脚本
-│   │   └── init-db.sh       # 数据库初始化
-│   ├── docker-compose.yml   # 数据库初始化
-│   ├── requirements.txt     # Python 依赖
-│   └── .env.example         # 环境变量示例
+├── backend/                   # Backend service (FastAPI)
+│   ├── main.py              # FastAPI main program
+│   ├── database.py          # Sync database connection
+│   ├── database_async.py    # Async database connection
+│   ├── models.py            # Pydantic data models
+│   ├── routers/             # API routes
+│   │   ├── conversations.py # Conversation management API
+│   │   ├── search.py        # Search API
+│   │   ├── statistics.py    # Statistics API
+│   │   └── summary.py       # Summary API
+│   ├── scripts/             # Utility scripts
+│   │   └── init-db.sh       # Database initialization
+│   ├── docker-compose.yml   # Database initialization
+│   ├── requirements.txt     # Python dependencies
+│   └── .env.example         # Environment variable example
 │
-├── frontend/                 # 前端应用 (React + Vite)
+├── frontend/                 # Frontend application (React + Vite)
 │   ├── src/
-│   │   ├── components/      # React 组件
+│   │   ├── components/      # React components
 │   │   │   ├── App.tsx
 │   │   │   ├── ConversationList.tsx
 │   │   │   ├── ConversationDetail.tsx
 │   │   │   ├── SearchPage.tsx
 │   │   │   ├── SummaryPage.tsx
 │   │   │   └── StatisticsPage.tsx
-│   │   ├── services/         # API 调用服务
+│   │   ├── services/         # API call services
 │   │   │   └── api.ts
-│   │   ├── types/            # TypeScript 类型定义
+│   │   ├── types/            # TypeScript type definitions
 │   │   │   └── index.ts
-│   │   ├── assets/           # 静态资源
+│   │   ├── assets/           # Static resources
 │   │   ├── App.css
 │   │   ├── index.css
-│   │   └── main.tsx          # 前端入口
-│   ├── public/               # 公共静态文件
-│   ├── package.json          # 前端依赖配置
-│   ├── vite.config.ts        # Vite 配置
-│   └── tsconfig.json        # TypeScript 配置
+│   │   └── main.tsx          # Frontend entry
+│   ├── public/               # Public static files
+│   ├── package.json          # Frontend dependency configuration
+│   ├── vite.config.ts        # Vite configuration
+│   └── tsconfig.json        # TypeScript configuration
 │
-├── docs/                      # 项目文档
-│   ├── ARCHITECTURE.md      # 系统架构文档
-│   ├── DEVELOPMENT.md       # 开发指南
-│   ├── API.md              # API 文档
-│   └── DEPLOYMENT.md       # 部署指南
+├── docs/                      # Project documentation
+│   ├── ARCHITECTURE.md      # System architecture documentation
+│   ├── DEVELOPMENT.md       # Development guide
+│   ├── API.md              # API documentation
+│   └── DEPLOYMENT.md       # Deployment guide
 │
-├── .gitignore              # Git 忽略文件配置
-├── README.md              # 项目说明（本文件）
-└── PRIVACY_CHECK.md       # 隐私检查指南
+├── .gitignore              # Git ignore file configuration
+├── README_CN.md            # Project description (Chinese)
+├── README.md              # Project description (this file)
+└── PRIVACY_CHECK.md       # Privacy check guide
 ```
 
 ---
 
-## 核心流程
+## Core Flow
 
 ```mermaid
 flowchart TD
-    subgraph 写入端
-        A[用户与AI讨论] --> B[通过ai-memory Skill保存]
-        B --> C[写入数据库]
+    subgraph Write_side
+        A[User discusses with AI] --> B[Save through ai-memory Skill]
+        B --> C[Write to database]
     end
-    
-    subgraph 读取端
-        C --> D[可视化平台查看]
-        D --> E[搜索/筛选]
-        E --> F[管理对话]
-        F --> G[月度/年度总结]
-        G --> H[AI生成总结]
+
+    subgraph Read_side
+        C --> D[View via visualization platform]
+        D --> E[Search/Filter]
+        E --> F[Manage capabilities]
+        F --> G[Monthly/annual summary]
+        G --> H[AI generates summary]
         H --> C
     end
 ```
 
-### 流程说明
+### Flow Description
 
-1. **保存阶段**：用户与AI讨论有价值的内容 → 通过ai-memory Skill保存掌握的能力（抽象层）
-2. **读取阶段**：可视化平台查看能力记录
-3. **检索阶段**：关键词、标签、重要性等搜索
-4. **管理阶段**：删除不需要的能力记录
-5. **提炼阶段**：月度/年度能力盘点 → AI综合分析所有能力记录，进行体系化 → 保存回数据库
-
----
-
-## 快速开始
-
-### 环境要求
-
-- **Docker** - 用于运行所有服务（数据库 + 后端 + 前端）
-- **OpenCode**（可替换） - AI 助手，用于与数据库交互以及知识总结
-
-### 部署方式对比
-
-| 部署方式 | 适用场景 | 优点 | 缺点 |
-|---------|---------|------|------|
-| Docker Compose | 快速启动、生产环境 | 一键部署、环境隔离 | 需要安装Docker |
-| 手动部署 | 开发调试 | 灵活控制、便于调试 | 需要手动配置环境 |
+1. **Save Phase**: User discusses valuable content with AI → Save mastered capabilities through ai-memory Skill (abstraction layer)
+2. **Read Phase**: Visualization platform to view capability records
+3. **Search Phase**: Keyword, tag, importance, etc. search
+4. **Manage Phase**: Delete unwanted capability records
+5. **Extraction Phase**: Monthly/annual capability inventory → AI comprehensively analyzes all capability records, systematizes → Save back to database
 
 ---
 
-### 方式一：使用 Docker Compose 一键部署（推荐）
+## Quick Start
 
-#### 1. 启动所有服务
+### Environment Requirements
 
-进入项目根目录，使用 Docker Compose 启动所有服务：
+- **Docker** - Used to run all services (database + backend + frontend)
+- **OpenCode** (replaceable) - AI assistant, used to interact with database and capability summary
+
+### Deployment Method Comparison
+
+| Deployment Method | Applicable Scenario | Pros | Cons |
+|-------------------|---------------------|------|------|
+| Docker Compose | Quick start, production | One-click deployment, environment isolation | Need to install Docker |
+| Manual Deployment | Development debugging | Flexible control, easy debugging | Need to manually configure environment |
+
+---
+
+### Method 1: Docker Compose One-Click Deployment (Recommended)
+
+#### 1. Start all services
+
+Enter the project root directory and use Docker Compose to start all services:
 
 ```bash
 cd F:\test\ai-memory-dashboard
 docker compose up -d
 ```
 
-这会自动启动以下三个微服务：
-- ✅ **PostgreSQL + pgvector** (端口 5432)
-- ✅ **FastAPI 后端** (端口 8000)
-- ✅ **React + Vite 前端** (端口 5173)
+This will automatically start the following three microservices:
+- ✅ **PostgreSQL + pgvector** (port 5432)
+- ✅ **FastAPI Backend** (port 8000)
+- ✅ **React + Vite Frontend** (port 5173)
 
-#### 2. 验证服务状态
+#### 2. Verify service status
 
-查看所有服务是否正常运行：
+Check if all services are running normally:
 
 ```bash
 docker compose ps
 ```
 
-应该看到三个服务都显示为 `Up` 或 `Up (healthy)` 状态。
+You should see all three services showing `Up` or `Up (healthy)` status.
 
-#### 3. 测试访问
+#### 3. Test access
 
-**测试后端 API**：
+**Test Backend API**:
 ```bash
 curl http://localhost:8000/health
 ```
-应该返回：`{"status":"healthy"}`
+Should return: `{"status":"healthy"}`
 
-**测试前端**：
+**Test Frontend**:
 ```bash
 curl -I http://localhost:5173
 ```
-应该返回 `HTTP/1.1 200 OK`
+Should return `HTTP/1.1 200 OK`
 
-**查看 API 文档**：
-访问 http://localhost:8000/docs
+**View API Documentation**:
+Visit http://localhost:8000/docs
 
-#### 4. 配置 OpenCode AI（可选）
+#### 4. Configure OpenCode AI (Optional)
 
-如果你想使用月度/年度总结功能，需要配置 OpenCode AI：
+If you want to use monthly/annual summary functionality, you need to configure OpenCode AI:
 
 ```bash
-# 复制配置模板
+# Copy configuration template
 cd backend
 cp .env.example .env.local
 
-# 编辑 .env.local，填入你的配置
+# Edit .env.local, fill in your configuration
 # AGENT_NAME=your-agent-name
 # MODEL_ID=your-model-id
 # PROVIDER_ID=your-provider-id
 ```
 
-详细配置说明请参考：[CONFIGURATION.md](./CONFIGURATION.md)
+For detailed configuration instructions, please refer to: [CONFIGURATION.md](./CONFIGURATION.md)
 
-#### 5. 停止服务
+#### 5. Stop services
 
 ```bash
-# 停止所有服务
+# Stop all services
 docker compose stop
 
-# 停止并删除容器
+# Stop and delete containers
 docker compose down
 
-# 停止、删除容器和卷（会删除数据）
+# Stop, delete containers and volumes (will delete data)
 docker compose down -v
 ```
 
 ---
 
-### 方式二：手动部署（开发调试）
+### Method 2: Manual Deployment (Development Debugging)
 
-> **注意**：手动部署需要手动配置环境变量。推荐使用Docker Compose一键部署。
+> **Note**: Manual deployment requires manually configuring environment variables. Docker Compose one-click deployment is recommended.
 
-#### Step 1: 启动数据库
+#### Step 1: Start database
 
-进入后端目录，使用 Docker Compose 启动数据库：
+Enter the backend directory and use Docker Compose to start the database:
 
 ```bash
 cd backend
 docker-compose up -d
 ```
 
-数据库会自动执行初始化脚本，创建以下内容：
-- ✅ pgvector 扩展
-- ✅ conversations 表（对话记录）
-- ✅ tags 表（标签）
-- ✅ conversation_tags 关联表
-- ✅ 向量列（用于语义搜索）
+The database will automatically execute initialization scripts to create the following:
+- ✅ pgvector extension
+- ✅ conversations table (conversation records)
+- ✅ tags table (tags)
+- ✅ conversation_tags association table
+- ✅ vector column (for semantic search)
 
-验证数据库是否启动成功：
+Verify if the database started successfully:
 
 ```bash
 docker ps | grep ai-memory-postgres
 ```
 
-#### Step 2: 启动后端
+#### Step 2: Start backend
 
-##### 2.1 安装 Python 依赖
+##### 2.1 Install Python dependencies
 
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-##### 2.2 配置环境变量
+##### 2.2 Configure environment variables
 
-从示例配置文件创建 `.env` 文件：
+Create a `.env` file from the example configuration file:
 
 ```bash
 # Windows (PowerShell)
@@ -348,266 +519,267 @@ cd backend
 cp .env.example .env
 ```
 
-`.env` 文件包含以下配置：
+The `.env` file contains the following configuration:
 
 ```bash
-# 数据库连接
+# Database connection
 AI_MEMORY_HOST=localhost
 AI_MEMORY_PORT=5432
 AI_MEMORY_DB=ai_memory
 AI_MEMORY_USER=ai_user
 AI_MEMORY_PASSWORD=ai_password_123
 
-# 后端 API 服务
+# Backend API service
 API_HOST=0.0.0.0
 API_PORT=8000
-# CORS 防护配置
+# CORS protection configuration
 CORS_ORIGINS=http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173
 
-# OpenCode 集成
+# OpenCode integration
 OPENCODE_API_URL=http://127.0.0.1:4096
 ```
 
-**注意**：`.env` 文件已在 `.gitignore` 中，不会被提交到 Git 仓库。
+**Note**: The `.env` file is already in `.gitignore` and will not be committed to the Git repository.
 
-##### 2.3 启动后端服务
+##### 2.3 Start backend service
 
 ```bash
 python main.py
 ```
 
-后端会运行在：**http://localhost:8000**
+The backend will run at: **http://localhost:8000**
 
-查看 API 文档：**http://localhost:8000/docs**
+View API documentation: **http://localhost:8000/docs**
 
-#### Step 3: 启动前端
+#### Step 3: Start frontend
 
-##### 3.1 安装 Node.js 依赖
+##### 3.1 Install Node.js dependencies
 
 ```bash
 cd frontend
 npm install
 ```
 
-##### 3.2 启动前端开发服务器
+##### 3.2 Start frontend development server
 
 ```bash
 npm run dev
 ```
 
-前端会运行在：**http://localhost:5173**
+The frontend will run at: **http://localhost:5173**
 
 ---
 
-### Step 4: 配置 OpenCode AI（可选，用于月度/年度总结）
+### Step 4: Configure OpenCode AI (Optional, for monthly/annual summary)
 
-如果你想使用月度/年度总结功能，需要配置 OpenCode AI：
+If you want to use monthly/annual summary functionality, you need to configure OpenCode AI:
 
-#### 4.1 创建配置文件
+#### 4.1 Create configuration file
 
 ```bash
 cd backend
 cp .env.example .env
 ```
 
-#### 4.2 修改配置文件
+#### 4.2 Modify configuration file
 
-编辑 `backend/.env`，添加 OpenCode 配置：
+Edit `backend/.env`, add OpenCode configuration:
 
 ```bash
-# OpenCode Agent 配置
+# OpenCode Agent configuration
 AGENT_NAME=your-agent-name
 MODEL_ID=your-model-id
 PROVIDER_ID=your-provider-id
 
-# OpenCode API 地址
+# OpenCode API address
 OPENCODE_API_URL=http://127.0.0.1:4096
 ```
 
-**如何获取配置信息**：
+**How to get configuration information**:
 ```bash
-# 查看 available agents
+# View available agents
 curl -s http://127.0.0.1:4096/agent
 
-# 查看 available models and providers
+# View available models and providers
 curl -s http://127.0.0.1:4096/config/providers
 ```
 
-#### 4.3 重启后端服务
+#### 4.3 Restart backend service
 
 ```bash
-# 停止后端服务
-# Ctrl+C 或 kill 进程
+# Stop backend service
+# Ctrl+C or kill process
 
-# 重新启动
+# Restart
 cd backend
 python main.py
 ```
 
-详细配置说明请参考：[CONFIGURATION.md](./CONFIGURATION.md)
+For detailed configuration instructions, please refer to: [CONFIGURATION.md](./CONFIGURATION.md)
 
-### Step 5: 部署 ai-memory Skill 到 OpenCode（可替换）
+### Step 5: Deploy ai-memory Skill to OpenCode (replaceable)
 
-#### 4.1 找到 OpenCode skill 目录
+#### 5.1 Find OpenCode skill directory
 
-通常位于：
+Usually located at:
 ```
-C:\Users\{你的用户名}\.config\opencode\skills\
+C:\Users\{YourUsername}\.config\opencode\skills\
 ```
 
-#### 4.2 复制 ai-memory 文件夹
+#### 5.2 Copy ai-memory folder
 
 ```bash
 # Linux/Mac
-cp -r ai-memory ~/.config/opencode/skills/
+cp -r skills/ai-memory ~/.config/opencode/skills/
 
 # Windows (PowerShell)
-Copy-Item -Recurse ai-memory "$env:USERPROFILE\.config\opencode\skills\"
+Copy-Item -Recurse skills/ai-memory "$env:USERPROFILE\.config\opencode\skills\"
 
-# 或者手动复制 ai-memory 文件夹到 OpenCode 的 skills 目录
+# Or manually copy the skills/ai-memory folder to OpenCode's skills directory
 ```
 
-复制后的目录结构：
+Directory structure after copying:
 ```
-ai-memory/
-├── SKILL.md              # 技能文档（~100行）
+skills/ai-memory/
+├── SKILL.md              # Skill documentation (~100 lines)
 ├── scripts/
-│   └── ai_memory.py      # AIMemory 类
-└── references/           # 完整文档
-    ├── API_REFERENCE.md  # API 参考
-    ├── INSTALL.md        # 详细安装指南
-    ├── CONTENT_GUIDELINES.md  # 内容存储指南
-    ├── TESTING.md        # 测试与验证
-    └── WSL2_TROUBLESHOOTING.md # 故障排查
+│   └── ai_memory.py      # AIMemory class
+└── references/           # Complete documentation
+    ├── API_REFERENCE.md  # API reference
+    ├── INSTALL.md        # Detailed installation guide
+    ├── CONTENT_GUIDELINES.md  # Content storage guide
+    ├── TESTING.md        # Testing and validation
+    └── WSL2_TROUBLESHOOTING.md # Troubleshooting
 ```
 
-#### 4.3 重启 OpenCode（可替换）
+#### 5.3 Restart OpenCode (replaceable)
 
-重启你的 OpenCode，让技能系统加载更新后的 skill。
+Restart your OpenCode to let the skill system load the updated skill.
 
 ---
 
-### Step 5: 开始使用
+### Step 5: Start Using
 
-#### 5.1 通过 Skill 记录 AI 对话
+#### 5.1 Record AI Capabilities via Skill
 
-现在你的 OpenCode AI 可以使用SKILL操作数据库：
+Now your OpenCode AI can use SKILL to operate the database:
 
 ```
-查询：使用 AI-Memory SKILL 查看关于XXX的对话
-插入：使用 AI-Memory SKILL 总结当前对话并写入
+Query: Use AI-Memory SKILL to view capabilities about XXX
+Insert: Use AI-Memory SKILL to summarize current conversation and write to database
 ```
 
-#### 5.2 通过前端查看和管理
+#### 5.2 View and Manage via Frontend
 
-访问 **http://localhost:5173**
+Visit **http://localhost:5173**
 
-**完整工作流程**：
-1. 与 AI 讨论有价值的内容
-2. 通过 Skill 保存到数据库（记录掌握的能力、深刻洞察、认知转变）
-3. 前端查看和管理（能力记录列表、搜索、统计）
-4. 点击月度/年度能力盘点
-5. 后端调用 OpenCode 综合分析所有能力记录
-6. 总结保存回数据库（你查看能力成长轨迹、能力评估、成长建议）
-7. 继续与 AI 讨论...
+**Complete Workflow**:
+1. Discuss valuable content with AI
+2. Save to database via Skill (record mastered capabilities, deep insights, cognitive transformation)
+3. View and manage via frontend (capability record list, search, statistics)
+4. Click monthly/annual capability inventory
+5. Backend calls OpenCode to comprehensively analyze all capability records
+6. Summary saved back to database (you view capability growth trajectory, capability assessment, growth suggestions)
+7. Continue discussing with AI...
 
 ---
 
-## 技术栈
+## Technology Stack
 
-### 后端
-- **FastAPI** - 高性能异步Web框架
-- **PostgreSQL 16** - 关系型数据库
-- **pgvector** - 向量相似度搜索，支持HNSW算法加速百万级向量检索
-- **httpx** - 异步HTTP客户端
-- **Pydantic** - 数据验证
+### Backend
+- **FastAPI** - High-performance async web framework
+- **PostgreSQL 16** - Relational database
+- **pgvector** - Vector similarity search, supports HNSW algorithm to accelerate million-level vector retrieval
+- **httpx** - Async HTTP client
+- **Pydantic** - Data validation
 
-### 前端
-- **React 18** - UI框架
-- **Vite** - 极速构建工具
-- **Tailwind CSS** - 实用优先的CSS框架
-- **shadcn/ui** - 高质量UI组件库
-- **Framer Motion** - 动画库
+### Frontend
+- **React 18** - UI framework
+- **Vite** - Ultra-fast build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality UI component library
+- **Framer Motion** - Animation library
 
 ### AI Memory Skill
-- **Python SDK** - 完整的AIMemory类，可直接调用数据库操作
-- **渐进式加载** - 三级加载机制（metadata → SKILL.md → references）
-- **API完整** - 所有方法的完整文档和示例
+- **Python SDK** - Complete AIMemory class, can directly call database operations
+- **Progressive Loading** - Three-level loading mechanism (metadata → SKILL.md → references)
+- **Complete API** - Complete documentation and examples for all methods
 
 ---
 
-## 故障排查
+## Troubleshooting
 
-### 后端启动失败
+### Backend startup failure
 
 ```bash
-# 检查PostgreSQL是否运行
+# Check if PostgreSQL is running
 docker ps | grep postgresql
 
-# 查看后端日志
+# View backend logs
 cd backend
 cat backend.log
 ```
 
-### 数据库连接失败
+### Database connection failure
 
 ```bash
-# 测试数据库连接
+# Test database connection
 PGPASSWORD=ai_password_123 psql -h localhost -U ai_user -d ai_memory -c "SELECT version();"
 ```
 
-### OpenCode API调用失败
+### OpenCode API call failure
 
 ```bash
-# 检查OpenCode是否运行
+# Check if OpenCode is running
 curl http://127.0.0.1:4096/health
 
-# 检查.env配置（Docker部署）
+# Check .env configuration (Docker deployment)
 docker exec ai-memory-backend env | grep -E '(AGENT_NAME|MODEL_ID|PROVIDER_ID)'
 
-# 检查.env配置（手动部署）
+# Check .env configuration (manual deployment)
 cat backend/.env | grep -E '(AGENT_NAME|MODEL_ID|PROVIDER_ID)'
 
-# 查看后端日志
+# View backend logs
 docker logs ai-memory-backend
 ```
 
-详细配置请参考：[CONFIGURATION.md](./CONFIGURATION.md)
+For detailed configuration, please refer to: [CONFIGURATION.md](./CONFIGURATION.md)
 
-### Windows WSL2问题
+### Windows WSL2 Issues
 
-- 确保Docker Desktop正在运行
-- 检查WSL2版本：`wsl --version`
-- 参考`ai-memory/references/WSL2_TROUBLESHOOTING.md`
+- Ensure Docker Desktop is running
+- Check WSL2 version: `wsl --version`
+- Refer to `skills/ai-memory/references/WSL2_TROUBLESHOOTING.md`
 
 ---
 
-## 完整文档
+## Complete Documentation
 
-更详细的文档请参考：
+For more detailed documentation, please refer to:
 
-### 核心文档
-- **README.md** - 项目概述和快速开始（本文件）
+### Core Documentation
+- **README.md** - Project overview and quick start (this file)
+- **README_CN.md** - Chinese version
 
 ### AI Memory Skill
-- **AI Memory Skill**：`skill/SKILL.md` - Python SDK完整文档
-- **API参考**：`skill/references/API_REFERENCE.md` - 所有API方法说明
-- **安装指南**：`skill/references/INSTALL.md` - 详细的安装步骤
-- **内容存储**：`skill/references/CONTENT_GUIDELINES.md` - 如何正确存储对话内容
-- **测试验证**：`skill/references/TESTING.md` - 测试脚本和验证方法
-- **故障排查**：`skill/references/WSL2_TROUBLESHOOTING.md` - WSL2和PostgreSQL问题
+- **AI Memory Skill**: `skills/ai-memory/SKILL.md` - Python SDK complete documentation
+- **API Reference**: `skills/ai-memory/references/API_REFERENCE.md` - All API method descriptions
+- **Installation Guide**: `skills/ai-memory/references/INSTALL.md` - Detailed installation steps
+- **Content Storage**: `skills/ai-memory/references/CONTENT_GUIDELINES.md` - How to correctly store conversation content
+- **Testing and Validation**: `skills/ai-memory/references/TESTING.md` - Test scripts and validation methods
+- **Troubleshooting**: `skills/ai-memory/references/WSL2_TROUBLESHOOTING.md` - WSL2 and PostgreSQL issues
 
-### 后端文档
-- **后端安装指南**：`backend/docs/INSTALL.md`
-- **后端 API 参考**：`backend/docs/references/API_REFERENCE.md`
+### Backend Documentation
+- **Backend Installation Guide**: `backend/docs/INSTALL.md`
+- **Backend API Reference**: `backend/docs/references/API_REFERENCE.md`
 
-### 配置文档
-- **完整配置指南**：[CONFIGURATION.md](./CONFIGURATION.md) - OpenCode AI 配置、环境变量说明、故障排查
+### Configuration Documentation
+- **Complete Configuration Guide**: [CONFIGURATION.md](./CONFIGURATION.md) - OpenCode AI configuration, environment variable description, troubleshooting
 
 ---
 
-## 贡献
+## Contributing
 
-欢迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome!
 
 ---

@@ -20,37 +20,16 @@ CREATE TABLE IF NOT EXISTS conversations (
     importance INTEGER DEFAULT 5 CHECK (importance >= 1 AND importance <= 10),
     word_count INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    date DATE DEFAULT CURRENT_DATE,
+    embedding vector(1536),
+    tags TEXT[] DEFAULT '{}'::text[]
 );
 
 CREATE INDEX IF NOT EXISTS idx_conversations_importance ON conversations(importance DESC);
 CREATE INDEX IF NOT EXISTS idx_conversations_created_at ON conversations(created_at DESC);
-EOSQL
-
-# Add vector column
-echo "Adding vector column for embeddings..."
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-ALTER TABLE conversations ADD COLUMN IF NOT EXISTS embedding vector(1536);
-EOSQL
-
-# Create tags table
-echo "Creating tags table..."
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-CREATE TABLE IF NOT EXISTS tags (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-EOSQL
-
-# Create conversation_tags junction table
-echo "Creating conversation_tags table..."
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-CREATE TABLE IF NOT EXISTS conversation_tags (
-    conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
-    tag_id INTEGER REFERENCES tags(id) ON DELETE CASCADE,
-    PRIMARY KEY (conversation_id, tag_id)
-);
+CREATE INDEX IF NOT EXISTS idx_conversations_date ON conversations(date);
+CREATE INDEX IF NOT EXISTS idx_conversations_imp_date ON conversations(importance DESC, date DESC);
 EOSQL
 
 # Grant permissions

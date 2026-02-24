@@ -30,6 +30,9 @@ CREATE TABLE conversations (
 - `title`: 对话标题，一句话描述主题
 - `summary`: 对话摘要，简要描述（1-3句话）
 - `details`: 详细内容，结构化的结论性总结
+  - ⚠️ **重要**：请参考 [内容存储指南](CONTENT_GUIDELINES.md) 了解正确的格式
+  - 应该提炼对话中形成的**能力**，而非简单记录对话内容
+  - 必须包含：能力定义、体现在深刻洞察、认知转变过程
 - `embedding`: 向量嵌入，1536维（OpenAI text-embedding-ada-002）
 - `tags`: 标签数组（PostgreSQL TEXT[]类型）
 - `importance`: 重要性评分（1-10）

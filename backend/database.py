@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 # Add ai-memory scripts to path
-ai_memory_path = Path(__file__).resolve().parent.parent / 'ai-memory' / 'scripts'
+ai_memory_path = Path(__file__).resolve().parent.parent / 'skills' / 'ai-memory' / 'scripts'
 if str(ai_memory_path) not in sys.path:
     sys.path.insert(0, str(ai_memory_path))
 

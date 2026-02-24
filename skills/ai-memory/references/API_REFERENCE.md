@@ -58,6 +58,9 @@ add_conversation(
 - `title` (str): 对话标题，一句话描述主题
 - `summary` (str): 对话摘要，简要描述（1-3句话）
 - `details` (str): 详细内容，结构化的结论性总结
+  - ⚠️ **重要**：请参考 [内容存储指南](CONTENT_GUIDELINES.md) 了解正确的格式
+  - 应该提炼对话中形成的**能力**，而非简单记录对话内容
+  - 必须包含：能力定义、体现在深刻洞察、认知转变过程
 - `embedding` (List[float]): 向量嵌入（1536维）
 - `tags` (List[str]): 标签列表（推荐3-5个）
 - `importance` (int): 重要性评分（1-10）
@@ -119,13 +122,77 @@ similar = memory.search_similar(
     min_importance=7
 )
 
-for id, title, summary, details, tags, imp, sim in similar:
-    print(f"[{sim:.4f}] {title}")
+    for id, title, summary, details, tags, imp, sim in similar:
+        print(f"[{sim:.4f}] {title}")
+```
+
+### get_by_title()
+
+按标题查询对话。
+
+```python
+get_by_title(
+    title: str
+) -> Optional[Tuple]
+```
+
+**参数：**
+- `title` (str): 对话标题
+
+**返回值：**
+- `Optional[Tuple]`: 找到的对话，包含：
+  - id: 对话ID
+  - date: 日期
+  - title: 标题
+  - summary: 摘要
+  - details: 详情
+  - tags: 标签
+  - importance: 重要性
+  - word_count: 字数
+  - created_at: 创建时间
+  - updated_at: 更新时间
+
+**示例：**
+```python
+title = "2026年02月月度总结"
+conv = memory.get_by_title(title)
+if conv:
+    print(f"Found: {conv[2]}")  # conv[2] 是 title
+```
+
+### update_summary()
+
+更新对话摘要和详情。
+
+```python
+update_summary(
+    conversation_id: int,
+    summary: str,
+    details: str
+) -> bool
+```
+
+**参数：**
+- `conversation_id` (int): 对话ID
+- `summary` (str): 新的摘要
+- `details` (str): 新的详情
+
+**返回值：**
+- `bool`: 是否更新成功
+
+**示例：**
+```python
+title = "2026年02月月度总结"
+existing = memory.get_by_title(title)
+if existing:
+    updated = memory.update_summary(existing[0], text[:2000], text)
+    print(f"Updated: {updated}")
 ```
 
 ### get_by_tags()
 
 按标签搜索对话。
+
 
 ```python
 get_by_tags(
