@@ -105,7 +105,7 @@ def get_conversations_by_period(memory, period_type: str):
 def format_conversations_for_prompt(conversations):
     """将对话数据格式化为 prompt 文本"""
     if not conversations:
-        return "（暂无对话记录）"
+        return "（暂无能力记录）"
     
     formatted = []
     for i, conv in enumerate(conversations[:50], 1):  # 限制最多50条
@@ -133,25 +133,26 @@ async def get_monthly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
         today = date.today()
         year_month = today.strftime("%Y年%m月")
         
-        prompt = f"""请根据以下用户对话记录，生成{year_month}的月度成长总结：
+        prompt = f"""请根据以下用户能力记录，生成{year_month}的月度成长总结：
 
-## 本月对话记录（共{len(conversations)}条）
+## 本月能力记录（共{len(conversations)}条）
 {conversations_text}
 
 ## 要求：
-1. 分析本月对话中用户能力的成长轨迹
-2. 识别本月最重要的3-5个对话
-3. 总结本月获得的新技能或知识点
-4. 分析用户在本月的关注重点（基于标签）
-5. 提供下个月的学习建议
+对本月能力记录进行：
+1. 归类整理并识别能力模块
+2. 识别能力优势和待提升领域
+3. 分析能力成长轨迹（是否可合并其他能力形成体系化）
+4. 基于标签分析用户关注的方向
+5. 基于当前能力，提供下一步学习建议
 
 请用中文回答，使用清晰的Markdown格式，包含以下章节：
 - 本月概览
-- 能力成长
-- 重要对话
-- 技能提升
-- 关注重点
-- 下月建议
+- 能力优势
+- 待提升领域
+- 能力成长情况（体系化进程）
+- 能力重心
+- 下一步学习计划
 """
 
         async with httpx.AsyncClient(timeout=httpx.Timeout(300.0, connect=10.0)) as client:
@@ -272,23 +273,24 @@ async def get_yearly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
         
         year = date.today().year
         
-        prompt = f"""请根据以下用户对话记录，生成{year}年的年度成长总结：
+        prompt = f"""请根据以下用户能力记录，生成{year}年的年度成长总结：
 
-## 今年对话记录（共{len(conversations)}条）
+## 今年能力记录（共{len(conversations)}条）
         {conversations_text}
 
 ## 要求：
-        1. 分析全年对话中用户能力的成长轨迹和里程碑
-        2. 识别年度最重要的5-10个对话，说明其重要性
-        3. 总结全年获得的主要技能和知识点
+优先根据月度总结，对今年能力记录进行：
+        1. 分析成长轨迹和里程碑
+        2. 识别年度关键能力
+        3. 总结已取得的能力体系
         4. 分析用户全年的关注重点（基于标签分布）
         5. 识别用户的能力优势和待提升领域
         6. 提供明年的成长目标和学习建议
 
         请用中文回答，使用清晰的Markdown格式，包含以下章节：
         - 年度成长概览
-        - 重要对话回顾
-        - 技能与知识积累
+        - 重要能力回顾
+        - 体系化成就
         - 关注重点分析
         - 能力评估
         - 来年成长建议
