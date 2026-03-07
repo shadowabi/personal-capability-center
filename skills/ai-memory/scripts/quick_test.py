@@ -58,8 +58,9 @@ def main():
 
     print("下一步操作:")
     print("  - 查看话题: python scripts/view_topics.py")
-    print("  - 添加对话: python scripts/demo_add.py")
+    print("  - 完整工作流程: python scripts/test_complete_workflow.py")
     print("  - 完整演示: python scripts/demo_full.py")
+    print("  - 系统测试: python scripts/test_ai_memory.py")
     print()
 
     return True

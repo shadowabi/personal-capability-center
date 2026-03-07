@@ -11,6 +11,8 @@ import numpy as np
 import os
 from pathlib import Path
 
+
+
 # 加载 .env 文件
 def _load_env_file():
     """从项目根目录加载 .env 文件"""
@@ -558,3 +560,5 @@ class OpenAIEmbeddings:
             embedding向量
         """
         return self.embed_documents([text])[0]
+
+
