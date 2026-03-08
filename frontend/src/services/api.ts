@@ -10,8 +10,8 @@ import type {
   ConversationsResponse,
 } from '../types';
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
-const OPENCODE_API_URL = 'http://127.0.0.1:4096';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const OPENCODE_API_URL = import.meta.env.VITE_OPENCODE_API_URL || 'http://localhost:4096';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -138,12 +138,12 @@ export interface SummaryResponse {
 
 export const summaryApi = {
   getMonthly: async () => {
-    const response = await api.get<SummaryResponse>('/monthly');
+    const response = await api.get<SummaryResponse>('/summary/monthly');
     return response.data.summary;
   },
 
   getYearly: async () => {
-    const response = await api.get<SummaryResponse>('/yearly');
+    const response = await api.get<SummaryResponse>('/summary/yearly');
     return response.data.summary;
   },
 };

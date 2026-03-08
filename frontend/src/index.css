@@ -3,45 +3,26 @@
 @tailwind utilities;
 
 @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
   body {
-    @apply min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 text-gray-900;
+    @apply min-h-screen text-gray-900;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    @apply text-gray-900;
-    font-family: 'Playfair Display', Georgia, serif;
-  }
-}
-
-@layer components {
-  .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-lg;
+  * {
+    box-sizing: border-box;
   }
 
-  .gradient-text {
-    @apply bg-gradient-to-r from-amber-600 via-orange-500 to-rose-500 bg-clip-text text-transparent;
+  .ant-layout {
+    min-height: 100vh;
   }
 
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl;
-  }
-}
-
-@layer utilities {
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .ant-layout-content {
+    min-height: calc(100vh - 128px);
   }
 }
 

@@ -14,7 +14,7 @@ def zero_vector(dim: int = 1536) -> str:
     """生成零向量用于embedding（PostgreSQL vector格式）"""
     return "[" + ",".join(["0.0"] * dim) + "]"
 
-router = APIRouter()
+router = APIRouter(prefix="/summary", tags=["summary"])
 logger = logging.getLogger(__name__)
 
 # 从环境变量读取配置
@@ -46,43 +46,43 @@ def extract_text_from_message(msg):
 def get_conversations_by_period(memory, period_type: str):
     """获取指定期间的对话数据"""
     today = date.today()
-    
+
     if period_type == "monthly":
         start_date = today.replace(day=1)
     else:
         start_date = today.replace(month=1, day=1)
-    
+
     try:
         all_conversations = memory.get_recent(days=3650, limit=200)
     except Exception as e:
         logger.error(f"Failed to get recent conversations: {e}")
         return []
-    
+
     if not all_conversations:
         return []
-    
+
     filtered = []
     max_count = MAX_CONVERSATIONS
-    
+
     for conv in all_conversations:
         if len(filtered) >= max_count:
             break
-            
+
         try:
             if len(conv) < 5:
                 continue
-                
+
             conv_id, title, summary, conv_date, importance = conv[0], conv[1], conv[2], conv[3], conv[4]
-            
+
             if conv_date is None:
                 continue
-            
+
             if isinstance(conv_date, str):
                 try:
                     conv_date = datetime.strptime(conv_date.split('T')[0], "%Y-%m-%d").date()
                 except:
                     continue
-            
+
             if conv_date >= start_date:
                 full_conv = memory.get_conversation(conv_id)
                 if full_conv:
@@ -98,7 +98,69 @@ def get_conversations_by_period(memory, period_type: str):
         except Exception as e:
             logger.warning(f"Error processing conversation: {e}")
             continue
-    
+
+    return filtered
+
+
+def get_monthly_summaries_for_year(memory, year: int):
+    """获取指定年份的所有月度总结"""
+    today = date.today()
+    year = year or today.year
+
+    try:
+        all_conversations = memory.get_recent(days=3650, limit=200)
+    except Exception as e:
+        logger.error(f"Failed to get recent conversations: {e}")
+        return []
+
+    if not all_conversations:
+        return []
+
+    filtered = []
+
+    for conv in all_conversations:
+        try:
+            if len(conv) < 5:
+                continue
+
+            conv_id, title, summary, conv_date, importance = conv[0], conv[1], conv[2], conv[3], conv[4]
+
+            # 检查日期是否在目标年份内
+            if conv_date is None:
+                continue
+
+            if isinstance(conv_date, str):
+                try:
+                    conv_date = datetime.strptime(conv_date.split('T')[0], "%Y-%m-%d").date()
+                except:
+                    continue
+
+            if conv_date.year != year:
+                continue
+
+            # 获取完整对话以检查标签
+            full_conv = memory.get_conversation(conv_id)
+            if not full_conv:
+                continue
+
+            tags = full_conv[5] if len(full_conv) > 5 else []
+            details = full_conv[4] if len(full_conv) > 4 else ''
+
+            # 只获取包含"月度"标签的记录
+            if "月度" in tags:
+                filtered.append({
+                    'id': conv_id,
+                    'title': title,
+                    'summary': summary,
+                    'details': details,
+                    'tags': tags,
+                    'importance': importance,
+                    'date': str(conv_date)
+                })
+        except Exception as e:
+            logger.warning(f"Error processing conversation: {e}")
+            continue
+
     return filtered
 
 
@@ -216,7 +278,7 @@ async def get_monthly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
                                 if text:
                                     # 保存总结到数据库
                                     year_month = today.strftime("%Y年%m月")
-                                    title = f"{year_month}月度总结"
+                                    title = f"{year_month} 月度总结"
                                     existing = memory.get_by_title(title)
                                     if existing:
                                         memory.update_summary(existing[0], "", text)
@@ -228,7 +290,7 @@ async def get_monthly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
                                             details=text,
                                             embedding=zero_vector(),
                                             tags=["总结", "月度"],
-                                            importance=10,
+                                            importance=4,
                                             word_count=len(text),
                                             date=today
                                         )
@@ -268,18 +330,19 @@ async def get_monthly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
 async def get_yearly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
     """生成年度成长总结"""
     try:
-        conversations = get_conversations_by_period(memory, "yearly")
-        conversations_text = format_conversations_for_prompt(conversations)
-        
         year = date.today().year
-        
-        prompt = f"""请根据以下用户能力记录，生成{year}年的年度成长总结：
 
-## 今年能力记录（共{len(conversations)}条）
+        # 只获取今年的月度总结
+        monthly_summaries = get_monthly_summaries_for_year(memory, year)
+        conversations_text = format_conversations_for_prompt(monthly_summaries)
+
+        prompt = f"""请根据以下用户今年的月度总结，生成{year}年的年度成长总结：
+
+## 今年月度总结（共{len(monthly_summaries)}条）
         {conversations_text}
 
 ## 要求：
-优先根据月度总结，对今年能力记录进行：
+根据月度总结，对今年能力记录进行：
         1. 分析成长轨迹和里程碑
         2. 识别年度关键能力
         3. 总结已取得的能力体系
@@ -354,7 +417,7 @@ async def get_yearly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
                                     if text:
                                         # 保存总结到数据库
                                         year = date.today().year
-                                        title = f"{year}年年度总结"
+                                        title = f"{year}年 年度总结"
                                         existing = memory.get_by_title(title)
                                         if existing:
                                             memory.update_summary(existing[0], text[:2000], text)
@@ -366,7 +429,7 @@ async def get_yearly_summary(memory=Depends(get_db)) -> Dict[str, Any]:
                                                   details=text,
                                                   embedding=zero_vector(),
                                                   tags=["总结", "年度"],
-                                                  importance=10,
+                                                  importance=5,
                                                   word_count=len(text),
                                                   date=date.today()
                                               )

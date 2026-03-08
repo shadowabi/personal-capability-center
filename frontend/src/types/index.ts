@@ -34,6 +34,8 @@ export interface Statistics {
   avg_words: number;
   max_importance: number;
   min_importance: number;
+  total_words?: number;
+  updated_at?: string;
 }
 
 export interface TagUsage {
