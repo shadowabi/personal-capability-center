@@ -73,9 +73,98 @@ docker compose logs -f postgresql
 
 <!-- 详细安装说明：待补充 -->
 
+### 1.1 备份数据库（重要！）
+
+在执行任何数据库操作前，强烈建议先备份数据库：
+
+```bash
+# 备份数据库到SQL文件
+docker exec ai-memory-db pg_dump -U ai_user -d ai_memory > ai_memory_backup_$(date +%Y%m%d).sql
+
+# 备份Docker volume
+docker run --rm -v ai-memory_postgres_data:/data -v $(pwd):/backup \
+    ubuntu tar czf /backup/ai-memory-postgres_data_$(date +%Y%m%d).tar.gz -C /data .
+```
+
 ### 2. 基础使用
 
 #### 2.1 手动添加对话（带评分）
+
+#### 使用Markdown格式（推荐）
+
+AI Memory的`details`字段支持Markdown格式，前端会自动渲染。建议使用Markdown来组织结构化的内容。
+
+```python
+from scripts.ai_memory import AIMemory, generate_mock_embedding
+
+# 连接数据库
+memory = AIMemory()
+
+# 生成embedding（实际使用时使用真实的embedding）
+embedding = generate_mock_embedding()
+
+# 添加对话（使用Markdown格式）
+conv_id = memory.add_conversation_with_markdown(
+    title='从"参数越大越好"到实用决策框架的认知跃迁',
+    summary='通过批判性思维审视，用户意识到参数不是知识存储，而是认知维度...',
+    details='''## 问题背景
+- 最初理解：模型参数越大，会的东西越多
+- 困惑点：大模型vs小模型、蒸馏现象
+- 需求：给普通人提供实用的模型选择建议
+
+---
+
+## 掌握的能力
+
+### 能力1：认知维度理解能力
+**能力定义：**
+理解参数的本质不是知识存储容量，而是模型的认知维度
+
+**体现在深刻洞察：**
+- 参数越多，模型的认知空间维度越高
+- 不是"知道得多"，而是"理解得深"
+- 认知维度就像乐高积木
+
+**认知转变过程：**
+1. 原本认知：参数越大，会的东西越多
+2. 引导提问："如果参数=知识存储，那为什么小模型能从大模型蒸馏？"
+3. 突破点：蒸馏不是"复制知识"，而是"压缩理解"
+4. 新认知：参数=认知维度，不是知识存储
+
+---
+
+### 能力2：实用决策框架构建能力
+**能力定义：**
+将复杂技术问题转化为普通人可操作的决策框架
+
+**体现在深刻洞察：**
+- 按场景推荐模型：日常聊天用免费版、创作用中等版
+- 简化原则：不知道选什么→先试免费
+
+**认知转变过程：**
+1. 原本认知：需要给普通人解释技术概念
+2. 引导提问："如果有人问'什么汽车最好？'，你会怎么回答？"
+3. 突破点：选车要看用途，选模型也看用途
+4. 新认知：别纠结技术细节，关心够不够用就行''',
+    tags=['元认知', '批判性思维', '模型选择'],
+    importance=9,
+    word_count=2325
+)
+
+# 关闭连接
+memory.close()
+```
+
+**Markdown格式说明：**
+
+- 使用`##`表示主标题（如"问题背景"、"掌握的能力"）
+- 使用`###`表示子标题（如"能力1"）
+- 使用`**文本**`表示加粗（如"**能力定义：**"）
+- 使用`- 文本`表示无序列表
+- 使用`1. 文本`表示有序列表
+- 使用`---`表示分隔符
+
+#### 使用普通文本格式
 
 ```python
 from scripts.ai_memory import AIMemory
@@ -83,7 +172,7 @@ from scripts.ai_memory import AIMemory
 # 连接数据库
 memory = AIMemory()
 
-# 添加对话（⚠️ 生产环境请按照能力提炼指南正确组织内容）
+# 添加对话（普通文本格式）
 embedding = generate_embedding(text)
 conv_id = memory.add_conversation(
     title='学习Python',
@@ -190,6 +279,89 @@ python scripts/test_ai_memory.py
 - ✅ **Python封装** - 开箱即用的AIMemory类
 - ✅ **高性能** - HNSW索引加速向量搜索
 - ✅ **能力提炼** - 从对话中提取可复用的能力
+- ✅ **Markdown支持** - `details`字段支持Markdown格式，前端自动渲染，让内容更易读
+
+### Markdown格式最佳实践
+
+**何时使用Markdown：**
+- 需要结构化展示能力定义、深刻洞察、认知转变过程时
+- 需要清晰展示多个维度（如问题背景、能力列表）时
+- 需要使用列表、加粗、标题等格式增强可读性时
+
+**Markdown格式建议：**
+
+```markdown
+## 标题1
+- 内容项1
+- 内容项2
+
+## 标题2
+
+### 子标题
+**强调文本**：描述内容
+
+- 列表项1
+- 列表项2
+
+---
+
+分隔符
+```
+
+**格式化工具：**
+- `add_conversation_with_markdown()` - 明确使用Markdown格式的便捷方法
+- `add_conversation(format_type='markdown')` - 通过format_type参数指定格式
+- 前端会自动渲染Markdown，无需额外处理
+
+### 格式转换工具
+
+如果数据库中有使用旧格式（"问题背景："、"掌握的能力："等）的记录，可以使用以下方法转换为Markdown格式：
+
+```python
+# format_converter.py
+import re
+
+def convert_to_markdown(details: str) -> str:
+    """将旧格式转换为Markdown格式"""
+    lines = details.split('\n')
+    result = []
+
+    for line in lines:
+        # 转换标题
+        if line.startswith('问题背景：'):
+            line = '## 问题背景'
+        elif line.startswith('掌握的能力：'):
+            line = '## 掌握的能力'
+        elif line.startswith('体现在深刻洞察：'):
+            line = '**体现在深刻洞察：**'
+        elif line.startswith('认知转变过程：'):
+            line = '**认知转变过程：**'
+        elif line.startswith('能力定义：'):
+            line = '**能力定义：**'
+
+        # 转换能力标题
+        if re.match(r'^能力\d+：', line):
+            line = re.sub(r'^能力(\d+)：', r'### 能力\1', line)
+
+        result.append(line)
+
+    return '\n'.join(result)
+
+# 使用示例
+from scripts.ai_memory import AIMemory
+
+memory = AIMemory()
+
+# 获取旧格式记录
+conv = memory.get_conversation(96)
+if conv:
+    # conv[4]是details字段
+    new_details = convert_to_markdown(conv[4])
+    memory.update_summary(96, conv[3], new_details)  # 更新details
+    print(f"已转换记录96为Markdown格式")
+
+memory.close()
+```
 
 ## 文档
 
@@ -197,16 +369,6 @@ python scripts/test_ai_memory.py
 
 - **[能力提炼指南](references/CAPABILITY_EXTRACTION.md)** - 理解什么是"能力" vs "知识点"，以及如何从对话中提炼能力
 - **[内容存储指南](references/CONTENT_GUIDELINES.md)** - 如何正确存储对话，包括能力记录的结构和格式
-
-### 📚 技术文档
-
-<!-- 以下文档待补充 -->
-- 完整安装指南 - 数据库安装和配置
-- API参考 - AIMemory类和方法的详细文档
-- 数据库架构 - 数据库表结构和索引设计
-- 使用示例 - 实际使用案例和代码示例
-- LangChain集成 - 如何与LangChain框架集成
-- 故障排查 - 常见问题和解决方案
 
 ## 许可证
 

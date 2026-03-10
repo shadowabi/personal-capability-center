@@ -95,33 +95,47 @@ class AIMemory:
         tags: List[str],
         importance: int,
         word_count: int,
-        date_param: Optional[date] = None
+        date_param: Optional[date] = None,
+        format_type: Optional[str] = None
     ) -> int:
         """添加新对话
 
         Args:
             title: 对话标题（一句话描述主题）
             summary: 对话摘要（简要描述）
-            details: 详细内容（结构化的结论性总结）
+            details: 详细内容（结构化的结论性总结，支持Markdown格式）
             embedding: 向量嵌入（1536维）
             tags: 标签列表
             importance: 重要性评分（1-10）
             word_count: 字数统计
             date_param: 对话日期（默认为今天）
+            format_type: 格式类型（'markdown' 或 'plain'），默认为None（不转换）
 
         Returns:
             新创建的对话记录ID
+
+        注意:
+            - 当 format_type='markdown' 时，建议使用标准的Markdown语法：
+              * 标题：## 标题
+              * 子标题：### 子标题
+              * 强调：**加粗文本**
+              * 列表：- 项目 或 1. 项目
+              * 分隔符：---
+            - 前端（如AI Memory Dashboard）会自动渲染Markdown格式
         """
         if date_param is None:
             date_param = date.today()
-        
+
+        # 如果指定了format_type，可以进行格式验证或转换（可选功能）
+        # 这里我们只是简单地存储，前端负责渲染
+
         self.cur.execute('''
             INSERT INTO conversations
             (date, title, summary, details, embedding, tags, importance, word_count)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
         ''', (date_param, title, summary, details, embedding, tags, importance, word_count))
-        
+
         self.conn.commit()
         return self.cur.fetchone()[0]
     
@@ -468,6 +482,69 @@ class AIMemory:
         """Context manager exit"""
         self.close()
         return False
+
+    def add_conversation_with_markdown(
+        self,
+        title: str,
+        summary: str,
+        details: str,
+        embedding: List[float],
+        tags: List[str],
+        importance: int,
+        word_count: int,
+        date_param: Optional[date] = None
+    ) -> int:
+        """添加新对话（使用Markdown格式的details）
+
+        这是add_conversation的便捷方法，明确表示details使用Markdown格式。
+
+        Args:
+            title: 对话标题（一句话描述主题）
+            summary: 对话摘要（简要描述）
+            details: 详细内容（使用Markdown格式）
+            embedding: 向量嵌入（1536维）
+            tags: 标签列表
+            importance: 重要性评分（1-10）
+            word_count: 字数统计
+            date_param: 对话日期（默认为今天）
+
+        Returns:
+            新创建的对话记录ID
+
+        Markdown格式示例:
+            ## 问题背景
+            - 问题描述1
+            - 问题描述2
+
+            ## 掌握的能力
+
+            ### 能力1：xxx
+            **能力定义：**
+            xxx
+
+            **体现在深刻洞察：**
+            - 洞察1
+            - 洞察2
+
+            **认知转变过程：**
+            1. 原本认知
+            2. 引导提问
+            3. 突破点
+            4. 新认知
+
+            ---
+        """
+        return self.add_conversation(
+            title=title,
+            summary=summary,
+            details=details,
+            embedding=embedding,
+            tags=tags,
+            importance=importance,
+            word_count=word_count,
+            date_param=date_param,
+            format_type='markdown'
+        )
 
 
 def generate_mock_embedding(dimension: int = 1536) -> List[float]:
