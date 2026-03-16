@@ -8,7 +8,7 @@ Personal Capability Center is a personal knowledge management system based on Po
 
 ## Core Features
 
-- **Record User Capabilities**: Use the ai-memory Skill to extract capabilities from conversations and save them to the database
+- **Record User Capabilities**: Use the Personal-Capability-Center skill to extract capabilities from conversations and save them to the database
 - **Manage Capability Records**: Visual platform to view, search, and delete capability records
 - **Generate Capability Summary Reports**: Monthly/yearly summaries to analyze capability growth trajectories
 
@@ -73,13 +73,13 @@ For detailed configuration instructions, refer to: [CONFIGURATION.md](./CONFIGUR
 
 ### Scenario 1: Record AI Capabilities
 ```
-User: Use AI-Memory SKILL to summarize the current conversation and write it
+User: Use Personal-Capability-Center skill to summarize the current conversation and write it
 AI: Capability saved to database (title: How to Use PostgreSQL)
 ```
 
 ### Scenario 2: Query Historical Capabilities
 ```
-User: Use AI-Memory SKILL to view capabilities about vector search
+User: Use Personal-Capability-Center skill to view capabilities about vector search
 AI: Found 3 related capabilities:
 1. pgvector Basic Usage (2025-12-01)
 2. Semantic Search Optimization (2025-12-05)
@@ -138,8 +138,8 @@ For more detailed documentation, please refer to:
 ### Core Documentation
 - **README.md** - Project overview and quick start (this file)
 
-### AI Memory Skill
-- **AI Memory Skill**: `skills/ai-memory/SKILL.md` - SKILL main file
+### Personal-Capability-Center skill
+- **Personal-Capability-Center skill**: `skills/ai-memory/SKILL.md` - SKILL main file
 
 ### Backend Documentation
 - **Backend Installation Guide**: `backend/docs/INSTALL.md`

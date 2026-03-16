@@ -1,14 +1,15 @@
 """
-查看AI Memory系统中的所有话题
+查看Personal Capability Center系统中的所有话题
 """
 
 import sys
 import os
 
 # 设置UTF-8编码
-if sys.platform == 'win32':
+if sys.platform == "win32":
     import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # 添加skill根目录到Python路径（脚本在scripts/目录下）
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -17,10 +18,11 @@ sys.path.insert(0, skill_root)
 
 from scripts.ai_memory import AIMemory
 
+
 def main():
     """查看所有话题"""
     print("\n" + "=" * 70)
-    print(" AI Memory System - 查看话题")
+    print(" Personal Capability Center System - 查看话题")
     print("=" * 70 + "\n")
 
     try:
@@ -61,7 +63,9 @@ def main():
         print("=" * 70 + "\n")
         recent = memory.get_recent(days=7, limit=10)
         if recent:
-            for idx, (conv_id, title, summary, conv_date, importance) in enumerate(recent, 1):
+            for idx, (conv_id, title, summary, conv_date, importance) in enumerate(
+                recent, 1
+            ):
                 print(f"  {idx}. ID:{conv_id} | {title}")
                 print(f"     {summary} | {conv_date} | 重要性: {importance}/10")
                 print()
@@ -73,7 +77,9 @@ def main():
     except Exception as e:
         print(f"\n✗ 查询失败: {e}")
         import traceback
+
         traceback.print_exc()
+
 
 if __name__ == "__main__":
     main()

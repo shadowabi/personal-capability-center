@@ -1,4 +1,4 @@
-# AI Memory完整工作流程
+# 个人能力中心完整工作流程
 
 本文档展示从对话到保存到数据库的完整工作流程，包括：对话→总结→提炼能力→评分→插入数据库。
 
@@ -24,7 +24,7 @@
 
 ## 示例场景
 
-假设你刚刚完成了一次关于"批判性思维"的深度对话，现在需要将其保存到AI Memory中。
+假设你刚刚完成了一次关于"批判性思维"的深度对话，现在需要将其保存到个人能力中心中。
 
 ### 对话内容（示例）
 
@@ -307,12 +307,12 @@ memory.close()
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-AI Memory完整工作流程示例
+个人能力中心完整工作流程示例
 从对话到保存到数据库的完整流程
 """
 
 import sys
-sys.path.insert(0, r'C:\Users\shadow\.config\opencode\skills\ai-memory')
+sys.path.insert(0, r'C:\Users\shadow\.config\opencode\skills\personal-capability-center')
 
 from scripts.ai_memory import AIMemory, OpenAIEmbeddings
 
@@ -508,4 +508,4 @@ importance = 4  # 信息记录
 - [能力提炼指南](CAPABILITY_EXTRACTION.md) - 如何从对话中提炼能力
 - [内容存储指南](CONTENT_GUIDELINES.md) - 如何正确存储对话
 - [评分指南](IMPORTANCE_GUIDE.md) - 如何评估对话重要性
-- [SKILL.md](../SKILL.md) - AI Memory使用说明
+- [SKILL.md](../SKILL.md) - 个人能力中心使用说明

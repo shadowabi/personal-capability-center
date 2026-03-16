@@ -8,9 +8,11 @@ Personal Capability Center是基于PostgreSQL + pgvector的个人知识管理系
 
 ## 核心特性
 
-- **记录用户能力**：使用ai-memory Skill从对话中提取能力，保存到数据库
+- **记录用户能力**：使用Personal-Capability-Center skill从对话中提取能力，保存到数据库
 - **管理能力记录**：可视化平台可查看、搜索、删除能力记录
-- **生成能力总结报告**：月度/年度总结，分析能力成长轨迹
+- **生成能力总结报告**：月度/年度总结，从分类、评估、追踪、重点分析、成长建议纬度总结能力
+- **私有化部署** : 数据自主可控
+- **能力模块化** : 可适配各类AI工具如OpenCode、OpenClaw，默认支持opencode
 
 ---
 
@@ -51,6 +53,58 @@ cp .env.example .env
 
 ---
 
+## 使用示例
+
+### 场景1：记录AI能力
+```
+用户：使用 Personal-Capability-Center skill 总结当前对话并写入
+AI：已保存能力到数据库（标题：如何使用PostgreSQL）
+```
+
+### 场景2：查询历史能力
+```
+用户：使用 Personal-Capability-Center skill 查看关于向量搜索的能力
+AI：找到3条相关能力：
+1. pgvector基础使用（2025-12-01）
+2. 语义搜索优化（2025-12-05）
+...
+```
+
+### 场景3：生成月度总结（默认使用opencode api，其他工具需要对backend\routers\summary.py进行适配性改造）
+1. 登录前端平台（http://localhost:5173）
+2. 点击"月度总结"按钮
+3. 后端调用OpenCode AI生成总结
+4. 查看能力总结报告
+
+---
+
+## 工作流程
+
+```mermaid
+flowchart TD
+    subgraph 写入端
+        A[用户与AI讨论] --> B[通过Personal-Capability-Center skill保存]
+        B --> C[写入数据库]
+    end
+    
+    subgraph 读取端
+        C --> D[可视化平台查看]
+        D --> E[搜索/筛选]
+        E --> F[管理对话]
+        F --> G[月度/年度总结]
+        G --> H[AI生成总结]
+        H --> C
+    end
+```
+
+1. 保存阶段：用户与AI讨论有价值的内容 → 通过Personal-Capability-Center skill保存掌握的能力（抽象层）
+2. 读取阶段：可视化平台查看能力记录
+3. 检索阶段：关键词、标签、重要性等搜索
+4. 管理阶段：删除不需要的能力记录
+5. 能力成长阶段：月度/年度能力盘点 → AI综合分析所有能力记录（分类、评估、追踪）→ 规划学习路径 → 形成体系化和可复用 → 保存回数据库
+
+---
+
 ## 技术栈
 
 ### 后端
@@ -66,31 +120,6 @@ cp .env.example .env
 - **Tailwind CSS** - 实用优先的CSS框架
 - **shadcn/ui** - 高质量UI组件库
 - **Framer Motion** - 动画库
-
----
-
-## 使用示例
-
-### 场景1：记录AI能力
-```
-用户：使用 AI-Memory SKILL 总结当前对话并写入
-AI：已保存能力到数据库（标题：如何使用PostgreSQL）
-```
-
-### 场景2：查询历史能力
-```
-用户：使用 AI-Memory SKILL 查看关于向量搜索的能力
-AI：找到3条相关能力：
-1. pgvector基础使用（2025-12-01）
-2. 语义搜索优化（2025-12-05）
-...
-```
-
-### 场景3：生成月度总结
-1. 登录前端平台（http://localhost:5173）
-2. 点击"月度总结"按钮
-3. 后端调用OpenCode AI生成总结
-4. 查看能力总结报告
 
 ---
 
@@ -138,8 +167,8 @@ docker logs ai-memory-backend
 ### 核心文档
 - **README.md** - 项目概述和快速开始（本文件）
 
-### AI Memory Skill
-- **AI Memory Skill**：`skills/ai-memory/SKILL.md` - SKILL 主要文件
+### Personal-Capability-Center skill
+- **Personal-Capability-Center skill**：`skills/personal-capability-center/SKILL.md` - SKILL 主要文件
 
 ### 后端文档
 - **后端安装指南**：`backend/docs/INSTALL.md`

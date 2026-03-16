@@ -13,7 +13,7 @@
 - 得出了什么深刻的思考（有了自己的理解和洞察）
 - 为什么会这样想（思考路径、关键节点、认知跃迁）
 
-### ai-memory的任务
+### 个人能力中心的任务
 
 - **记录能力到数据库**
 - 只有足够多的能力记录，才能做体系化分析
@@ -421,7 +421,7 @@ details = """问题背景：
 
 ```python
 import sys
-sys.path.insert(0, r'C:\Users\shadow\.config\opencode\skills\ai-memory')
+sys.path.insert(0, r'C:\Users\shadow\.config\opencode\skills\personal-capability-center')
 
 from scripts.ai_memory import AIMemory, generate_mock_embedding
 

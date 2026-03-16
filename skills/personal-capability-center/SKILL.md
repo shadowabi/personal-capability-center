@@ -1,6 +1,15 @@
-# AI Memory - 智能对话记忆系统
+---
+name: personal-capability-center
+description: >
+  Use this skill to extract, refine, and store capabilities from conversations into the Personal Capability Center database.
+  This skill handles capability extraction, semantic storage, and retrieval of user's evolving skills and insights.
+  Use when user wants to: save learned capabilities, search past insights, analyze growth patterns, or manage personal knowledge base.
+  Core features: vector similarity search, multi-dimensional importance scoring, LangChain integration.
+---
 
-一个基于PostgreSQL和pgvector的AI记忆系统，支持向量相似度搜索、多维筛选、自动评分和LangChain集成。
+# Personal Capability Center - 个人能力中心
+
+操作个人能力中心（Personal Capability Center）数据库的 skill，用于从对话中总结和提炼能力，存入数据库。
 
 ## 核心理念：对话即能力
 
@@ -15,7 +24,7 @@
 
 ### 🎯 重要性评分机制
 
-AI Memory使用**科学的多维度评分体系**（1-10分）来评估对话价值，避免"高分泛滥"问题。
+个人能力中心（Personal Capability Center）使用**科学的多维度评分体系**（1-10分）来评估对话价值，避免"高分泛滥"问题。
 
 **评分维度**（加权计算）：
 - 认知深度（30%）：内容的深度和抽象层级（1-3具体操作 → 7-8框架思维 → 9-10元认知跃迁）
@@ -33,7 +42,7 @@ AI Memory使用**科学的多维度评分体系**（1-10分）来评估对话价
 
 ### ⚠️ 重要提示
 
-**ai-memory的核心不是"存储对话"，而是"提炼能力"**
+**个人能力中心的核心不是"存储对话"，而是"提炼能力"**
 
 每个能力必须包含三要素：
 1. **能力定义**（抽象层）：本质是什么
@@ -54,8 +63,8 @@ AI Memory使用**科学的多维度评分体系**（1-10分）来评估对话价
 **推荐：使用Docker Compose**
 
 ```bash
-# 进入AI Memory目录
-cd path/to/ai-memory
+# 进入personal-capability-center目录
+cd path/to/personal-capability-center
 
 # 使用Docker Compose启动
 docker compose up -d
@@ -83,7 +92,7 @@ docker exec ai-memory-db pg_dump -U ai_user -d ai_memory > ai_memory_backup_$(da
 
 # 备份Docker volume
 docker run --rm -v ai-memory_postgres_data:/data -v $(pwd):/backup \
-    ubuntu tar czf /backup/ai-memory-postgres_data_$(date +%Y%m%d).tar.gz -C /data .
+    ubuntu tar czf /backup/personal-capability-center-postgres_data_$(date +%Y%m%d).tar.gz -C /data .
 ```
 
 ### 2. 基础使用
@@ -92,7 +101,7 @@ docker run --rm -v ai-memory_postgres_data:/data -v $(pwd):/backup \
 
 #### 使用Markdown格式（推荐）
 
-AI Memory的`details`字段支持Markdown格式，前端会自动渲染。建议使用Markdown来组织结构化的内容。
+个人能力中心的`details`字段支持Markdown格式，前端会自动渲染。建议使用Markdown来组织结构化的内容。
 
 ```python
 from scripts.ai_memory import AIMemory, generate_mock_embedding
@@ -192,7 +201,7 @@ memory.close()
 
 #### 2.2 智能评分（AI根据文档评分）
 
-AI Memory支持基于[评分指南](references/IMPORTANCE_GUIDE.md)的智能评分，确保评分的一致性和准确性。
+个人能力中心支持基于[评分指南](references/IMPORTANCE_GUIDE.md)的智能评分，确保评分的一致性和准确性。
 
 **评分维度**（加权计算）：
 - 认知深度（30%）：内容的深度和抽象层级

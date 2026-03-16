@@ -409,4 +409,4 @@ memory.close()
 
 - [能力提炼指南](CAPABILITY_EXTRACTION.md) - 如何从对话中提炼能力
 - [内容存储指南](CONTENT_GUIDELINES.md) - 如何存储提炼的能力
-- [SKILL.md](../SKILL.md) - AI Memory使用说明
+- [SKILL.md](../SKILL.md) - 个人能力中心使用说明

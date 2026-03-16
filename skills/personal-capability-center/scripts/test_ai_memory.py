@@ -1,5 +1,5 @@
 """
-AI Memory System 测试脚本
+Personal Capability Center System 测试脚本
 测试系统在不连接数据库情况下的代码结构和功能
 """
 
@@ -8,19 +8,23 @@ import os
 import platform
 
 # 设置UTF-8编码
-if sys.platform == 'win32':
+if sys.platform == "win32":
     import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # 添加skill根目录到Python路径（脚本在scripts/目录下）
 script_dir = os.path.dirname(os.path.abspath(__file__))
 skill_root = os.path.dirname(script_dir)
 sys.path.insert(0, skill_root)
 
+
 def get_opencode_skill_dir():
     """获取 OpenCode Skill 目录路径"""
     home_dir = os.path.expanduser("~")
-    return os.path.join(home_dir, ".config", "opencode", "skills", "ai-memory")
+    return os.path.join(
+        home_dir, ".config", "opencode", "skills", "personal-capability-center"
+    )
 
 
 def test_imports():
@@ -31,6 +35,7 @@ def test_imports():
 
     try:
         import psycopg2
+
         print("✓ psycopg2 导入成功")
     except ImportError as e:
         print(f"✗ psycopg2 导入失败: {e}")
@@ -38,13 +43,19 @@ def test_imports():
 
     try:
         import numpy as np
+
         print("✓ numpy 导入成功")
     except ImportError as e:
         print(f"✗ numpy 导入失败: {e}")
         return False
 
     try:
-        from scripts.ai_memory import AIMemory, generate_mock_embedding, OpenAIEmbeddings
+        from scripts.ai_memory import (
+            AIMemory,
+            generate_mock_embedding,
+            OpenAIEmbeddings,
+        )
+
         print("✓ ai_memory 模块导入成功")
     except ImportError as e:
         print(f"✗ ai_memory 模块导入失败: {e}")
@@ -52,6 +63,7 @@ def test_imports():
 
     print("\n所有模块导入成功！\n")
     return True
+
 
 def test_mock_embedding():
     """测试生成mock向量"""
@@ -78,6 +90,7 @@ def test_mock_embedding():
         print(f"✗ Mock向量生成测试失败: {e}\n")
         return False
 
+
 def test_class_structure():
     """测试AIMemory类的结构"""
     print("=" * 60)
@@ -89,20 +102,23 @@ def test_class_structure():
         import inspect
 
         # 获取所有方法
-        methods = [name for name, _ in inspect.getmembers(AIMemory, predicate=inspect.isfunction)]
+        methods = [
+            name
+            for name, _ in inspect.getmembers(AIMemory, predicate=inspect.isfunction)
+        ]
         print(f"✓ AIMemory类有 {len(methods)} 个方法")
         print(f"✓ 方法列表: {', '.join(methods[:10])}")
 
         # 检查关键方法是否存在
         key_methods = [
-            'add_conversation',
-            'search_similar',
-            'get_by_tags',
-            'get_by_importance',
-            'get_conversation',
-            'search_by_keyword',
-            'get_statistics',
-            'close'
+            "add_conversation",
+            "search_similar",
+            "get_by_tags",
+            "get_by_importance",
+            "get_conversation",
+            "search_by_keyword",
+            "get_statistics",
+            "close",
         ]
 
         for method in key_methods:
@@ -122,6 +138,7 @@ def test_class_structure():
         print(f"✗ 类结构测试失败: {e}\n")
         return False
 
+
 def test_database_connection_simulation():
     """模拟数据库连接（实际连接需要PostgreSQL）"""
     print("=" * 60)
@@ -137,11 +154,11 @@ def test_database_connection_simulation():
         # 尝试连接（预期会失败，因为没有数据库）
         try:
             memory = AIMemory(
-                host='localhost',
+                host="localhost",
                 port=5432,
-                database='ai_memory',
-                user='ai_user',
-                password='ai_password_123'
+                database="ai_memory",
+                user="ai_user",
+                password="ai_password_123",
             )
             print("✓ 数据库连接成功！")
             memory.close()
@@ -161,6 +178,7 @@ def test_database_connection_simulation():
         print(f"✗ 数据库连接测试异常: {e}\n")
         return False
 
+
 def test_openai_embeddings():
     """测试OpenAI Embeddings类（需要API key）"""
     print("=" * 60)
@@ -172,7 +190,12 @@ def test_openai_embeddings():
         import inspect
 
         # 检查类结构
-        methods = [name for name, _ in inspect.getmembers(OpenAIEmbeddings, predicate=inspect.ismethod)]
+        methods = [
+            name
+            for name, _ in inspect.getmembers(
+                OpenAIEmbeddings, predicate=inspect.ismethod
+            )
+        ]
         print(f"✓ OpenAIEmbeddings类可用")
         print(f"✓ 主要方法: embed_documents, embed_query")
 
@@ -188,6 +211,7 @@ def test_openai_embeddings():
         print(f"✗ OpenAI Embeddings测试失败: {e}\n")
         return False
 
+
 def test_code_examples():
     """测试代码示例"""
     print("=" * 60)
@@ -202,12 +226,12 @@ def test_code_examples():
 
         # 准备测试数据
         test_data = {
-            'title': '学习Python',
-            'summary': '学习了Python基础语法',
-            'details': '学习了变量、数据类型、控制流等基础知识',
-            'tags': ['Python', '编程'],
-            'importance': 8,
-            'word_count': 30
+            "title": "学习Python",
+            "summary": "学习了Python基础语法",
+            "details": "学习了变量、数据类型、控制流等基础知识",
+            "tags": ["Python", "编程"],
+            "importance": 8,
+            "word_count": 30,
         }
 
         print("✓ 测试数据准备完成:")
@@ -251,10 +275,11 @@ def test_code_examples():
         print(f"✗ 代码示例测试失败: {e}\n")
         return False
 
+
 def main():
     """运行所有测试"""
     print("\n" + "=" * 60)
-    print("AI Memory System - 功能测试")
+    print("Personal Capability Center System - 功能测试")
     print("=" * 60 + "\n")
 
     results = []
@@ -291,6 +316,7 @@ def main():
         print("\n✗ 部分测试失败，请检查错误信息")
 
     print()
+
 
 if __name__ == "__main__":
     main()

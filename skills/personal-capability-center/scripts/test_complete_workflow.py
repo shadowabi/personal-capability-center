@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-AI Memory完整工作流程测试脚本
+Personal Capability Center完整工作流程测试脚本
 
 验证：对话 → 总结 → 提炼能力 → 评分 → 插入数据库 的完整流程
 """
 
 import sys
-sys.path.insert(0, r'C:\Users\shadow\.config\opencode\skills\ai-memory')
+
+sys.path.insert(
+    0, r"C:\Users\shadow\.config\opencode\skills\personal-capability-center"
+)
 
 from scripts.ai_memory import AIMemory, generate_mock_embedding
 
@@ -16,7 +19,7 @@ def test_complete_workflow():
     """测试完整工作流程"""
 
     print("=" * 70)
-    print("AI Memory完整工作流程测试")
+    print("Personal Capability Center完整工作流程测试")
     print("=" * 70)
 
     # ============================================================
@@ -72,7 +75,7 @@ def test_complete_workflow():
 - 突破点：通过类比理解了市盈率的本质
 - 新认知：类比是验证理解的有效方法"""
 
-    tags = ['批判性思维', '投资', '类比思维', '认知跃迁']
+    tags = ["批判性思维", "投资", "类比思维", "认知跃迁"]
     word_count = len(details)
 
     print(f"[OK] 标题: {title}")
@@ -140,7 +143,7 @@ def test_complete_workflow():
         embedding=embedding,
         tags=tags,
         importance=importance,
-        word_count=word_count
+        word_count=word_count,
     )
 
     print(f"\n[OK] 对话已保存，ID: {conv_id}")
@@ -172,7 +175,9 @@ def test_complete_workflow():
 
     similar = memory.search_similar(embedding, limit=3)
     print(f"\n找到 {len(similar)} 个相似对话：")
-    for i, (sid, stitle, ssummary, sdetails, stags, simps, sim_score) in enumerate(similar[:3], 1):
+    for i, (sid, stitle, ssummary, sdetails, stags, simps, sim_score) in enumerate(
+        similar[:3], 1
+    ):
         print(f"\n{i}. ID: {sid}")
         print(f"   标题: {stitle}")
         print(f"   重要性: {simps}/10")
@@ -216,4 +221,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n[FAIL] 测试失败: {e}")
         import traceback
+
         traceback.print_exc()

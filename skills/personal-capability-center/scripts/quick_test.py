@@ -1,23 +1,25 @@
 """
-快速测试脚本 - 一键验证AI Memory系统是否可用
+快速测试脚本 - 一键验证Personal Capability Center系统是否可用
 """
 
 import sys
 import os
 
 # 设置UTF-8编码
-if sys.platform == 'win32':
+if sys.platform == "win32":
     import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 # 添加skill根目录到Python路径（脚本在scripts/目录下）
 script_dir = os.path.dirname(os.path.abspath(__file__))
 skill_root = os.path.dirname(script_dir)
 sys.path.insert(0, skill_root)
 
+
 def main():
     print("\n" + "=" * 70)
-    print(" AI Memory System - 快速验证")
+    print(" Personal Capability Center System - 快速验证")
     print("=" * 70)
 
     # 测试1: 导入检查
@@ -26,6 +28,7 @@ def main():
         import psycopg2
         import numpy
         from scripts.ai_memory import AIMemory
+
         print("✓ 所有依赖已安装")
     except ImportError as e:
         print(f"✗ 依赖检查失败: {e}")
@@ -53,7 +56,7 @@ def main():
         return False
 
     print("\n" + "=" * 70)
-    print(" ✓ AI Memory System 验证通过！系统可以正常使用")
+    print(" ✓ Personal Capability Center System 验证通过！系统可以正常使用")
     print("=" * 70 + "\n")
 
     print("下一步操作:")
@@ -64,6 +67,7 @@ def main():
     print()
 
     return True
+
 
 if __name__ == "__main__":
     success = main()
